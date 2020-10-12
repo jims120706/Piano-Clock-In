@@ -1,6 +1,5 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
 		<view>
 			<text class="title">{{title}}</text>
 		</view>
@@ -11,7 +10,7 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'my-center'
 			}
 		},
 		onLoad() {
@@ -23,7 +22,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	.content {
 		display: flex;
 		flex-direction: column;

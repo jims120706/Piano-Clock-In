@@ -1,12 +1,38 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/index/index",
+			"path": "pages/my-center/index",
+			"style": {
+				"navigationBarTitleText": "uni-app"
+			}
+		},
+		{
+			"path": "pages/clock-in/index",
 			"style": {
 				"navigationBarTitleText": "uni-app"
 			}
 		}
 	],
+	"tabBar": {
+		"color": "#2c2c2c",
+		"selectedColor": "#1296db",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/clock-in/index",
+				"iconPath": "static/images/tabbar/clock-in.png",
+				"selectedIconPath": "static/images/tabbar/clock-in-active.png",
+				"text": "打卡"
+			},
+			{
+				"pagePath": "pages/my-center/index",
+				"iconPath": "static/images/tabbar/my-center.png",
+				"selectedIconPath": "static/images/tabbar/my-center-active.png",
+				"text": "我的"
+			}
+		]
+	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
