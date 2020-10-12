@@ -1,48 +1,57 @@
 <template>
-	<view class="content">
-		<view>
-			<text class="title">{{title}}</text>
-		</view>
-	</view>
+  <view class="my-center" @click="getUserInfo">
+    <image class="user-logo" :src="userLogo" :lazy-load="true"></image>
+    <view class="user-name">
+      <text>{{ username }}</text>
+    </view>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				title: 'my-center'
-			}
-		},
-		onLoad() {
-
-		},
-		methods: {
-
-		}
-	}
+import { getUserInfo, log } from "@/utils/utils";
+export default {
+  data() {
+    return {
+      username: "点击授权登录",
+      userLogo: require("@/static/images/my-center/default-user-logo.svg"),
+      userInfo: {},
+    };
+  },
+  onLoad() {},
+  methods: {
+    // 获取用户信息
+    getUserInfo() {
+      if (this.hasUserInfo()) return;
+      getUserInfo({
+        success: (res) => {
+          log("用户信息", res);
+          this.userLogo = res.userInfo.avatarUrl;
+          this.username = "你好，" + res.userInfo.nickName;
+          this.userInfo = res.userInfo;
+        },
+      });
+    },
+    // 是否有用户信息
+    hasUserInfo() {
+      return this.userInfo.nickName;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin: 200rpx auto 50rpx auto;
-	}
-
-	.text-area {
-		display: flex;
-		justify-content: center;
-	}
-
-	.title {
-		font-size: 36rpx;
-		color: #8f8f94;
-	}
+.my-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .user-logo {
+    width: 300rpx;
+    height: 300rpx;
+    margin: 20rpx 0;
+  }
+  .user-name {
+    color: #8a8a8a;
+    font-size: 32rpx;
+  }
+}
 </style>
