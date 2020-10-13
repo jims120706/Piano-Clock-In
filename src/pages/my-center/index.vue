@@ -1,9 +1,12 @@
 <template>
-  <view class="my-center" @click="getUserInfo">
+  <view class="my-center">
     <image class="user-logo" :src="userLogo" :lazy-load="true"></image>
-    <view class="user-name">
+    <view class="user-name" v-if="hasUserInfo">
       <text>{{ username }}</text>
     </view>
+    <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!hasUserInfo">
+      {{username}}
+    </button>
   </view>
 </template>
 
@@ -17,23 +20,26 @@ export default {
       userInfo: {},
     };
   },
+  computed: {
+    hasUserInfo() {
+      return this.userInfo.nickName;
+    }
+  },
   onLoad() {},
   methods: {
     // 获取用户信息
-    getUserInfo() {
-      if (this.hasUserInfo()) return;
-      getUserInfo({
-        success: (res) => {
-          log("用户信息", res);
-          this.userLogo = res.userInfo.avatarUrl;
-          this.username = "你好，" + res.userInfo.nickName;
-          this.userInfo = res.userInfo;
-        },
-      });
-    },
-    // 是否有用户信息
-    hasUserInfo() {
-      return this.userInfo.nickName;
+    getUserInfo(event) {
+      log("用户信息", event.detail);
+      let res = event.detail
+      // if (this.hasUserInfo()) return;
+      // getUserInfo({
+      //   success: (res) => {
+      //     log("用户信息", res);
+      this.userLogo = res.userInfo.avatarUrl;
+      this.username = "你好，" + res.userInfo.nickName;
+      this.userInfo = res.userInfo;
+      //   },
+      // });
     },
   },
 };
