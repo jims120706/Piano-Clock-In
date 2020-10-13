@@ -1,5 +1,5 @@
 <template>
-  <view class="container plan-card p-0 mt-2">
+  <view class="container plan-card p-0 mt-4">
     <view class="row row1 no-gutters align-items-center">
       <view class="my-col col-3 justify-content-center text-center">
         <image
@@ -20,15 +20,15 @@
     <view class="row row2 no-gutters align-items-center">
       <view class="col justify-content-center text-center">
         <view class="unit">20</view>
-        <view class="text pt-1">坚持天数</view>
+        <view class="text pt-1">今天时间</view>
       </view>
       <view class="col justify-content-center text-center">
         <view class="unit">10h</view>
-        <view class="text pt-1">平均每周</view>
+        <view class="text pt-1">累计时间</view>
       </view>
       <view class="col justify-content-center text-center">
         <view class="unit">0h</view>
-        <view class="text pt-1">最近7天</view>
+        <view class="text pt-1">当年时间</view>
       </view>
       <view class="col justify-content-center text-center">
         <view class="unit">9h</view>
