@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { log } from "@/utils/utils";
 import CompPlanCard from "./components/PlanCard";
 export default {
   components: {
@@ -15,7 +16,21 @@ export default {
       title: "clock-in",
     };
   },
-  onLoad() {},
+  onLoad() {
+    uni.login({
+      scopes: "auth_user",
+      success: (res) => {
+        log("登录成功", res);
+        this.$Api.commonApi.getSessionKey({
+          data: {
+            code: res.code
+          }
+        }).then(res => {
+          log('请求成功', res)
+        })
+      },
+    });
+  },
   methods: {},
 };
 </script>
