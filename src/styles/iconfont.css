@@ -1,0 +1,25 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1602556223268'); /* IE9 */
+  src: url('iconfont.eot?t=1602556223268#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPUAAsAAAAACCgAAAOHAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqEEINLATYCJAMMCwgABCAFhG0HOBsTB1FULcJkPyRJWkTQ4WzAagHAiJIAAAAASCACABFUy9azu3efMg5UiBKfy6NCVBQKI7AoUAphUQJNNuLuf26HaEn3+jwuYZa0T+7/mdyQ12mZlAgRQuMnu883C80ewUp0Mv/AKti/iatznVSEO/3PMeMVyIDy22wukUlRbaPh3gQHFF1kO5ADPiG9B3iGSTq3E+haoWidpB7OMFQ4/QLx2CwdGJYUSk9saAt1y9QiXlXa6TldAvAS/3z8Q2AIJFXm7HT6sPRh8om/kkwa4iYTT+vpIM0iYxcoxF2r4UInde/q6BqCbn9orQhpLVvTEDNMXu3+wyMJouZE98EmeRKf2CeT+GpjvWrmh+tdY4Q3bFxjjPFrWJD09RmGQ7KHgSAKgiwP6y4fsWR3H3XTWzoMDDk0srA9GqVgvUUVsRqt1IFBqvX/qqICv/xan17d26/z774tvPOm4NarzvUzxgvGVdsByJoLBsVENUN4urqB0K47+fKCFusgzaIJ9EwUIMZVZMEUqYuQv13Ua1RF5KM+RoWrsrSKIE8rUrNaBarFZmFV5t+ezevG6M49i5vvsIux2+n/Y5/0WIrBPvcbynAMB6duCfgS0PY5WPk5Wd32a3HE4PhBgM1Q3be3v8fcZ+ztgYZU5N3DtZfcTIa7GMeSP8l8hMmleN0+TAju298fYQdXBo8fMv4ZaRDtG3zA4cFtyozJ0AgyT0b1ITH2uc9EI2HSd0gxE4Jh4uAUhesSrUbipESC6CoN07L3sjM6M+xyWH1+qdAaqgAA/H+Xj9GWsZcUiiZ/7+9AcHV2WqVe9G8BM9bgYyMwDlnjImlLjGb+mXkF0TQlyWxHmYuuUlaPkT3pflUK3Zz5F8bD1G++ZPGFeUPbgiFpWYasbRVRMLtQ6dmDWts+dO1Yz+6ZqXRE6WDbCyCMvSEZeods7IMomC9UlvyhNg4aus7CaMme9WiWknrIYfLRHcawNs+Ep+ZxEnsk2SROVWTHuCtVdWhD09e/6ltTRtUaI+oBaXGfQNGTp7iC3ShJcix68og81oI+Lmzdr6HtQ5rXmcLYsQpxMOJDricU8uQyIqzPxrXvHxGpkXBUPSUNyitSqYWNI5PGGIFYC7JRJc9yS+1GsjAmIKGSS6EVdCKJRA4V7Z0ixMM0wQxnwaa7lcRYgba/KP1+Rb7EMs66OVLkKMp9dewMGqszWYYZAAA=') format('woff2'),
+  url('iconfont.woff?t=1602556223268') format('woff'),
+  url('iconfont.ttf?t=1602556223268') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1602556223268#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-daka:before {
+  content: "\e66c";
+}
+
+.icon-gangqin:before {
+  content: "\e50b";
+}
+

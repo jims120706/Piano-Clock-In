@@ -1,0 +1,23 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "10068467",
+      "name": "打卡",
+      "font_class": "daka",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    },
+    {
+      "icon_id": "13500914",
+      "name": "钢琴",
+      "font_class": "gangqin",
+      "unicode": "e50b",
+      "unicode_decimal": 58635
+    }
+  ]
+}
