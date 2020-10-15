@@ -6,9 +6,11 @@
           mode="date"
           :value="initDate"
           start="2000-01-01"
-          :end="endDate"
+          :end="initDate"
           @change="_handlePlanDateChange"
+          v-if="mode === 'someday'"
         >
+          <!-- 补卡模式 -->
           <view class="weui-cell col-12">
             <view class="weui-cell__hd">
               <label class="weui-label label">打卡日期:</label>
@@ -23,16 +25,29 @@
             </view>
           </view>
         </picker>
+        <!-- 打卡模式 -->
+        <view class="weui-cell col-12" v-if="mode === 'today'">
+          <view class="weui-cell__hd">
+            <label class="weui-label label">打卡日期:</label>
+          </view>
+          <view class="weui-cell__bd">
+            <text>{{ initDate }}</text>
+          </view>
+        </view>
       </view>
       <view class="time row no-gutters">
-        <view class="weui-cell col-12">
+        <!-- 补卡模式 -->
+        <view class="weui-cell col-12" v-if="mode === 'someday'">
           <view class="weui-cell__hd">
             <label class="weui-label label">打卡时间:</label>
           </view>
           <view class="weui-cell__bd">
             <picker-view class="time-picker">
               <picker-view-column>
-                <view class="column" v-for="(item, index) in hours" :key="index"
+                <view
+                  class="column"
+                  v-for="(item, index) in somedayHours"
+                  :key="index"
                   >{{ item }} 小时</view
                 >
               </picker-view-column>
@@ -42,6 +57,67 @@
                   v-for="(item, index) in minutes"
                   :key="index"
                   >{{ item }} 分钟</view
+                >
+              </picker-view-column>
+            </picker-view>
+          </view>
+        </view>
+
+        <!-- 打卡模式 -->
+        <view class="weui-cell col-12" v-if="mode === 'today'">
+          <view class="weui-cell__hd">
+            <label class="weui-label label">开始时间:</label>
+          </view>
+          <view class="weui-cell__bd">
+            <picker-view
+              class="time-picker"
+              @change="_handleStartTimePickerChange"
+              :value="startTimePickerList"
+            >
+              <picker-view-column>
+                <view
+                  class="column"
+                  v-for="(item, index) in todayStartHours"
+                  :key="index"
+                  >{{ item }} 时</view
+                >
+              </picker-view-column>
+              <picker-view-column class="column">
+                <view
+                  class="column"
+                  v-for="(item, index) in todayStartMins"
+                  :key="index"
+                  >{{ item }} 分</view
+                >
+              </picker-view-column>
+            </picker-view>
+          </view>
+        </view>
+
+        <view class="weui-cell col-12" v-if="mode === 'today'">
+          <view class="weui-cell__hd">
+            <label class="weui-label label">结束时间:</label>
+          </view>
+          <view class="weui-cell__bd">
+            <picker-view
+              class="time-picker"
+              @change="_handleEndPickerChange"
+              :value="endTimePickerList"
+            >
+              <picker-view-column>
+                <view
+                  class="column"
+                  v-for="(item, index) in todayEndHours"
+                  :key="index"
+                  >{{ item }} 时</view
+                >
+              </picker-view-column>
+              <picker-view-column class="column">
+                <view
+                  class="column"
+                  v-for="(item, index) in todayEndMins"
+                  :key="index"
+                  >{{ item }} 分</view
                 >
               </picker-view-column>
             </picker-view>
@@ -83,15 +159,55 @@ import CustomButton from "@/components/CustomButton";
 import PopupContainer from "@/components/Popup";
 
 export default {
+  props: {
+    /**
+     * 打卡模式
+     * today: 打卡
+     * someday：补卡
+     */
+    mode: {
+      type: String,
+      default: "today",
+    },
+  },
   components: {
     PopupContainer,
     CustomButton,
   },
+  computed: {
+    // 打卡开始小时选择器
+    todayStartHours() {
+      return this.todayHours;
+    },
+    // 打卡开始分钟选择器
+    todayStartMins() {
+      return this.minutes;
+    },
+    // 打卡结束小时选择器
+    /**
+     * 开始时间改变后，结束时间数组会发生变化，但是下标没变，所以要手动更改下标
+     */
+    todayEndHours() {
+      const newEndHours = this.todayHours.slice(this.startTimePickerList[0]);
+      // 找出小时在新数组中的下标，没有置为0
+      let index = newEndHours.find(hour => parseInt(hour) === this.endTimePickerList[0] );
+      this.endTimePickerList[0] = index === -1 ? 0 : index;
+      return newEndHours;
+    },
+    // 打卡结束分钟选择器
+    todayEndMins() {
+      const newEndMins = this.minutes.slice(this.startTimePickerList[1]);
+      // 找出小时在新数组中的下标，没有置为0
+      let index = newEndMins.find(min => parseInt(min) === this.endTimePickerList[1] );
+      this.endTimePickerList[1] = index === -1 ? 0 : index;
+      return newEndMins;
+    },
+  },
   data() {
     return {
-      initDate: "2020-10-15",
-      endDate: new Date().toLocaleDateString().replace("/", "-"),
-      hours: [
+      initDate: new Date().toLocaleDateString().replace(/\//gi, "-"),
+      // 补卡小时数组
+      somedayHours: [
         "--",
         1,
         2,
@@ -118,7 +234,38 @@ export default {
         23,
         24,
       ],
+      // 打卡小时数组
+      todayHours: [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+      ],
       minutes: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55],
+      // 开始选择器值
+      startTimePickerList: [0, 0],
+      // 结束选择器值
+      endTimePickerList: [0, 0],
     };
   },
   methods: {
@@ -137,6 +284,18 @@ export default {
     _handlePlanSubmit() {
       log("提交打卡记录");
       this.close();
+    },
+    // 打卡开始时间变化
+    _handleStartTimePickerChange(event) {
+      log("打卡开始时间变化", event);
+      const arr = event.detail.value;
+      this.startTimePickerList = arr;
+    },
+    // 打卡结束时间变化
+    _handleEndPickerChange(event) {
+      log("打卡结束时间变化", event);
+      const arr = event.detail.value;
+      this.endTimePickerList = arr;
     },
   },
 };
@@ -163,11 +322,13 @@ export default {
         display: flex;
         justify-content: center;
         flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
     }
   }
-  .feeling{
-    .textarea{
+  .feeling {
+    .textarea {
       height: 120rpx;
       border: 1px solid #323233;
     }
