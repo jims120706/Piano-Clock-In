@@ -48,6 +48,20 @@
           </view>
         </view>
       </view>
+      <view class="feeling row no-gutters">
+        <view class="weui-cell col-12">
+          <view class="weui-cell__hd">
+            <label class="weui-label label">打卡心得:</label>
+          </view>
+          <view class="weui-cell__bd">
+            <textarea
+              class="weui-textarea textarea"
+              placeholder="欢迎分享你的心得"
+              rows="2"
+            ></textarea>
+          </view>
+        </view>
+      </view>
       <view class="row no-gutters mt-4">
         <custom-button
           class="col-12"
@@ -144,6 +158,12 @@ export default {
         justify-content: center;
         flex-direction: column;
       }
+    }
+  }
+  .feeling{
+    .textarea{
+      height: 120rpx;
+      border: 1px solid #323233;
     }
   }
 }

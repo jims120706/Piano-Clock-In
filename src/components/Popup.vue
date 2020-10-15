@@ -44,7 +44,7 @@ export default {
     ctnStyle() {
       return `width: ${this.cWidth}vw;height: ${
         this.cHeight ? this.cHeight + "vh" : "auto"
-      };`;
+      };max-height: 80vh;`;
     },
   },
   data() {
