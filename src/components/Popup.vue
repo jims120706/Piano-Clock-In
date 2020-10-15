@@ -114,18 +114,19 @@ export default {
   > ._container {
     position: relative;
     background: white;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: hidden;
     z-index: 1002;
-    padding: 20rpx;
+    // padding: 20rpx;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
     > ._head {
       text-align: center;
       width: 100%;
       font-size: 48rpx;
       font-weight: bold;
       border-bottom: 1px solid #ebedf0;
-      padding-bottom: 20rpx;
+      height: 100rpx;
       position: relative;
       > .close-btn {
         width: 40rpx;
@@ -136,8 +137,11 @@ export default {
       }
     }
     > ._body {
+      flex: 1;
       font-size: 32rpx;
-      padding-top: 20rpx;
+      padding: 40rpx;
+      overflow-x: hidden;
+      overflow-y: scroll;
     }
   }
 }
