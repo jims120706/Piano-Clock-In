@@ -1,0 +1,144 @@
+<template>
+  <view class="popup-comp" v-show="visible" :animation="animationData">
+    <view class="bg" @click.stop="close"></view>
+    <view class="_container" :style="ctnStyle">
+      <view class="_head">
+        <text>{{ title }}</text>
+        <image
+          @click="_handleClick"
+          src="@/static/images/close.svg"
+          class="close-btn"
+          :lazy-load="true"
+        ></image>
+      </view>
+      <view class="_body">
+        <slot></slot>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+// 创建动画对象
+import AnimationCreator from "@/utils/animate";
+const AnimationManager = new AnimationCreator({
+  duration: 250,
+});
+
+export default {
+  props: {
+    title: {
+      type: String,
+      default: "",
+    },
+    cWidth: {
+      type: String,
+      default: "80",
+    },
+    cHeight: {
+      type: String,
+      default: "",
+    },
+  },
+  computed: {
+    ctnStyle() {
+      return `width: ${this.cWidth}vw;height: ${
+        this.cHeight ? this.cHeight + "vh" : "auto"
+      };`;
+    },
+  },
+  data() {
+    return {
+      visible: false,
+      animationData: null,
+    };
+  },
+  mounted() {
+    AnimationManager.startAnimation({
+      opacity: [0],
+    }).then((animationData) => {
+      this.animationData = animationData;
+    });
+  },
+  methods: {
+    open() {
+      this.visible = true;
+      setTimeout(() => {
+        AnimationManager.startAnimation({
+          opacity: [1],
+        }).then((animationData) => {
+          this.animationData = animationData;
+        });
+      }, 100);
+    },
+    close() {
+      AnimationManager.startAnimation({
+        opacity: [0],
+      }).then((animationData) => {
+        this.animationData = animationData;
+        setTimeout(() => {
+          this.visible = false;
+        }, 300);
+      });
+    },
+    _handleClick() {
+      this.$emit("onBeforeClose");
+      this.close();
+      this.$emit("onClose");
+    },
+  },
+};
+</script>
+
+<style lang="scss">
+.popup-comp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  > .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000000;
+    opacity: 0.5;
+    z-index: 1001;
+  }
+  > ._container {
+    position: relative;
+    background: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    z-index: 1002;
+    padding: 20rpx;
+    border-radius: 10px;
+    > ._head {
+      text-align: center;
+      width: 100%;
+      font-size: 48rpx;
+      font-weight: bold;
+      border-bottom: 1px solid #ebedf0;
+      padding-bottom: 20rpx;
+      position: relative;
+      > .close-btn {
+        width: 40rpx;
+        height: 40rpx;
+        position: absolute;
+        right: 0;
+        top: 17rpx;
+      }
+    }
+    > ._body {
+      font-size: 32rpx;
+      padding-top: 20rpx;
+    }
+  }
+}
+</style>
