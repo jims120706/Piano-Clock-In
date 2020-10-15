@@ -75,7 +75,7 @@ function _request(method = 'GET', options = {}) {
         }
       },
       success: (res) => {
-        resolve(res)
+        resolve(res.data)
       },
       fail(err) {
         uni.showToast({

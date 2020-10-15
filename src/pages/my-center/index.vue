@@ -4,8 +4,12 @@
     <view class="user-name" v-if="hasUserInfo">
       <text>{{ username }}</text>
     </view>
-    <button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!hasUserInfo">
-      {{username}}
+    <button
+      open-type="getUserInfo"
+      @getuserinfo="getUserInfo"
+      v-if="!hasUserInfo"
+    >
+      {{ username }}
     </button>
   </view>
 </template>
@@ -18,19 +22,37 @@ export default {
       username: "点击授权登录",
       userLogo: require("@/static/images/my-center/default-user-logo.svg"),
       userInfo: {},
+      openid: "",
     };
   },
   computed: {
     hasUserInfo() {
       return this.userInfo.nickName;
-    }
+    },
   },
-  onLoad() {},
+  onLoad() {
+    uni.login({
+      scopes: "auth_user",
+      success: (res) => {
+        log("登录成功", res);
+        this.$Api.commonApi
+          .getSessionKey({
+            data: {
+              code: res.code,
+            },
+          })
+          .then((res) => {
+            this.openid = res.result.item.openid;
+            log("请求成功", res);
+          });
+      },
+    });
+  },
   methods: {
     // 获取用户信息
     getUserInfo(event) {
       log("用户信息", event.detail);
-      let res = event.detail
+      let res = event.detail;
       // if (this.hasUserInfo()) return;
       // getUserInfo({
       //   success: (res) => {
@@ -38,6 +60,19 @@ export default {
       this.userLogo = res.userInfo.avatarUrl;
       this.username = "你好，" + res.userInfo.nickName;
       this.userInfo = res.userInfo;
+      let reqJson = JSON.parse(res.rawData);
+      reqJson.openId = this.openid;
+      console.log('reqJson', reqJson)
+      console.log('JSON.stringify(reqJson)', JSON.stringify(reqJson))
+      this.$Api.commonApi
+        .login({
+          data: {
+            userInfo: JSON.stringify(reqJson),
+          },
+        })
+        .then((res) => {
+          log("登录成功", res);
+        });
       //   },
       // });
     },

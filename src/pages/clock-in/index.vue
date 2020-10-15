@@ -16,21 +16,7 @@ export default {
       title: "clock-in",
     };
   },
-  onLoad() {
-    uni.login({
-      scopes: "auth_user",
-      success: (res) => {
-        log("登录成功", res);
-        this.$Api.commonApi.getSessionKey({
-          data: {
-            code: res.code
-          }
-        }).then(res => {
-          log('请求成功', res)
-        })
-      },
-    });
-  },
+  onLoad() {},
   methods: {},
 };
 </script>

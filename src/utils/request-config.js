@@ -5,15 +5,15 @@
 
 
 const dev = {
-  api1: 'https://api.yaeher.cn',
-  api2: 'https://hc.api.yaeher.cn/community',
-  api3: 'https://admin.yaeher.cn:444',
+  api1: 'http://www.dailycheck.top:8080',
+  api2: 'http://www.dailycheck.top:8080',
+  api3: 'http://www.dailycheck.top:8080'
 }
 
 const prod = {
-  api1: 'https://api.yaeherhealth.com',
-  api2: 'https://hcapi.yaeherhealth.com/community',
-  api3: 'https://ng.admin.yaeherhealth.com'
+  api1: 'http://www.dailycheck.top:8080',
+  api2: 'http://www.dailycheck.top:8080',
+  api3: 'http://www.dailycheck.top:8080'
 }
 
 const apiConfig = {
@@ -53,6 +53,6 @@ if (!env) {
 
 export default apiConfig[env]
 export const useMockToken = false // 是否使用mockToken
-export const useLocalBaseUrl = true // 是否使用本地url作为请求的baseUrl，本地联调开发时用
+export const useLocalBaseUrl = false // 是否使用本地url作为请求的baseUrl，本地联调开发时用
 export const mockToken = tokenList['xiaoxiao']// 写死的mockToken
 export const localBaseUrl = localBaseUrlList['kai'] // 本地联调时的baseUrl
