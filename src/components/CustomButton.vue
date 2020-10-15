@@ -4,7 +4,7 @@
     :style="btnStyle"
   >
     <image :src="icon" :lazy-load="true" class="icon"></image>
-    <text class="pl-1 text">{{ text }}</text>
+    <text :class="textSpanClass" class="text">{{ text }}</text>
   </view>
 </template>
 
@@ -27,8 +27,15 @@ export default {
       type: String,
       default: "black",
     },
+    textspan: {
+      type: String,
+      default: '1'
+    }
   },
   computed: {
+    textSpanClass() {
+      return `pl-${this.textspan}`
+    },
     btnStyle() {
       return `color: ${this.color};background-color: ${this.bgColor};`;
     },
