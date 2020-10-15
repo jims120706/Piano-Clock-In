@@ -5,8 +5,8 @@
         <picker
           mode="date"
           :value="initDate"
-          start="2018-01-01"
-          end="2022-12-31"
+          start="2000-01-01"
+          :end="endDate"
           @change="_handlePlanDateChange"
         >
           <view class="weui-cell col-12">
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { log } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
 import PopupContainer from "@/components/Popup";
 
@@ -89,6 +90,7 @@ export default {
   data() {
     return {
       initDate: "2020-10-15",
+      endDate: new Date().toLocaleDateString().replace("/", "-"),
       hours: [
         "--",
         1,
@@ -123,6 +125,9 @@ export default {
     open() {
       this.$refs.popup.open();
     },
+    close() {
+      this.$refs.popup.close();
+    },
     // 打卡日期切换回调
     _handlePlanDateChange(event) {
       log("打卡日期切换回调", event);
@@ -131,6 +136,7 @@ export default {
     // 提交打卡记录
     _handlePlanSubmit() {
       log("提交打卡记录");
+      this.close();
     },
   },
 };
