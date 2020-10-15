@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import '@/static/styles/bootstrap-grid.scss'
+import '@/static/styles/weui.scss'
 import '@/static/styles/public.scss'
 import Api from '@/api'
 

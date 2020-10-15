@@ -35,12 +35,26 @@
         <view class="text pt-1">距离目标</view>
       </view>
     </view>
-    <view class="row row3 no-gutters justify-content-center align-items-center mt-3 pb-4">
+    <view
+      class="row row3 no-gutters justify-content-center align-items-center mt-3 pb-4"
+    >
       <view class="col-5 align-items-center">
-        <custom-button color="white" bgColor="rgb(233, 117, 40)" text="分享" :icon="require('@/static/images/clock-in/share.svg')"></custom-button>
+        <custom-button
+          color="white"
+          bgColor="rgb(233, 117, 40)"
+          text="分享"
+          :icon="require('@/static/images/clock-in/share.svg')"
+          @click.native="_onBtnClick('onShareBtnClick')"
+        ></custom-button>
       </view>
       <view class="col-5 ml-4 align-items-center">
-        <custom-button color="white" bgColor="rgb(233, 117, 40)" text="添加" :icon="require('@/static/images/clock-in/add.svg')"></custom-button>
+        <custom-button
+          color="white"
+          bgColor="rgb(233, 117, 40)"
+          text="添加"
+          :icon="require('@/static/images/clock-in/add.svg')"
+          @click.native="_onBtnClick('onAddBtnClick')"
+        ></custom-button>
       </view>
     </view>
   </view>
@@ -51,6 +65,11 @@ import CustomButton from "@/components/CustomButton";
 export default {
   components: {
     CustomButton,
+  },
+  methods: {
+    _onBtnClick(eventName) {
+      this.$emit(eventName);
+    },
   },
 };
 </script>
@@ -93,7 +112,7 @@ export default {
       font-size: 32rpx;
     }
   }
-  >.row3 {
+  > .row3 {
   }
 }
 </style>

@@ -1,11 +1,37 @@
 <template>
   <view class="clock-in">
-    <!-- <comp-plan-card></comp-plan-card> -->
-    <popup-container title="aaa" ref="popup">
-      <view style="color:red;">title</view>
-      123456789
+    <comp-plan-card @onAddBtnClick="_handlePlanAddClick"></comp-plan-card>
+    <popup-container title="添加打卡记录" ref="popup" class="clock-in-popup">
+      <view class="date">
+        <picker
+          mode="date"
+          :value="initDate"
+          start="2018-01-01"
+          end="2022-12-31"
+          @change="_handlePlanDateChange"
+        >
+          <view class="weui-cell">
+            <view class="weui-cell__hd">
+              <label class="weui-label label">打卡日期:</label>
+            </view>
+            <view class="weui-cell__bd">
+              <text>{{ initDate }}</text>
+            </view>
+          </view>
+        </picker>
+        <view class="time">
+          <view class="weui-cell">
+            <view class="weui-cell__hd">
+              <label class="weui-label label">打卡时间:</label>
+            </view>
+            <view class="weui-cell__bd">
+              <text>{{ initDate }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
     </popup-container>
-    <button @click="_showPopup">显示弹出层</button>
+    <!-- <button @click="_showPopup">显示弹出层</button> -->
   </view>
 </template>
 
@@ -21,14 +47,26 @@ export default {
   data() {
     return {
       title: "clock-in",
+      initDate: "2020-10-15",
     };
   },
   onLoad() {},
+  mounted() {
+    this._showPopup();
+  },
   methods: {
     _showPopup() {
-      log('this.$refs.popup', this.$refs.popup)
-      this.$refs.popup.open()
-    }
+      this.$refs.popup.open();
+    },
+    // 点击添加打卡按钮回调
+    _handlePlanAddClick() {
+      this._showPopup();
+    },
+    // 打卡日期切换回调
+    _handlePlanDateChange(event) {
+      log("打卡日期切换回调", event);
+      this.initDate = event.detail.value;
+    },
   },
 };
 </script>
@@ -39,5 +77,10 @@ export default {
   height: 100%;
   padding: 0 40rpx;
   overflow: hidden;
+  .clock-in-popup {
+    color: #323233;
+    .date {
+    }
+  }
 }
 </style>
