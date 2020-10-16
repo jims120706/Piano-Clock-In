@@ -1,10 +1,11 @@
 <template>
   <view class="popup-comp" v-show="visible" :animation="animationData">
-    <view class="bg" @click.stop="close"></view>
+    <view class="bg" @click.stop="maskClose" :style="bgStyle"></view>
     <view class="_container" :style="ctnStyle">
-      <view class="_head">
+      <view class="_head" v-if="showHead">
         <text>{{ title }}</text>
         <image
+          v-if="closeIcon"
           @click="_handleClick"
           src="@/static/images/close.svg"
           class="close-btn"
@@ -39,12 +40,31 @@ export default {
       type: String,
       default: "",
     },
+    bgTransparent: {
+      type: Boolean,
+      default: false,
+    },
+    showHead: {
+      type: Boolean,
+      default: true,
+    },
+    closeIcon: {
+      type: Boolean,
+      default: true,
+    },
+    maskCloseable: {
+      type: Boolean,
+      default: true,
+    }
   },
   computed: {
     ctnStyle() {
       return `width: ${this.cWidth}vw;height: ${
         this.cHeight ? this.cHeight + "vh" : "auto"
       };max-height: 80vh;`;
+    },
+    bgStyle() {
+      return `opacity: ${this.bgTransparent ? 0 : 0.5};`;
     },
   },
   data() {
@@ -81,6 +101,10 @@ export default {
         }, 300);
       });
     },
+    maskClose() {
+      if(!this.maskCloseable) return;
+      this.close()
+    },
     _handleClick() {
       this.$emit("onBeforeClose");
       this.close();
@@ -108,7 +132,6 @@ export default {
     width: 100%;
     height: 100%;
     background: #000000;
-    opacity: 0.5;
     z-index: 1001;
   }
   > ._container {

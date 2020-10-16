@@ -2,6 +2,7 @@
   <view class="clock-in">
     <comp-plan-card @onAddBtnClick="_handlePlanAddClick"></comp-plan-card>
     <clock-in-popup ref="clockInPopup"></clock-in-popup>
+    <loading ref="loading"></loading>
   </view>
 </template>
 
@@ -20,7 +21,10 @@ export default {
     };
   },
   onLoad() {},
-  mounted() {},
+  mounted() {
+    log('loading', this.$refs.loading)
+    this.$refs.loading.show()
+  },
   methods: {
     _showPopup() {
       this.$refs.clockInPopup.open();
