@@ -42,18 +42,18 @@
         <custom-button
           color="white"
           bgColor="rgb(233, 117, 40)"
-          text="分享"
-          :icon="require('@/static/images/clock-in/share.svg')"
-          @click.native="_onBtnClick('onShareBtnClick')"
+          text="补卡"
+          :icon="require('@/static/images/clock-in/replenish.svg')"
+          @click.native="_onBtnClick('replenish')"
         ></custom-button>
       </view>
       <view class="col-5 ml-4 align-items-center">
         <custom-button
           color="white"
           bgColor="rgb(233, 117, 40)"
-          text="添加"
+          text="打卡"
           :icon="require('@/static/images/clock-in/add.svg')"
-          @click.native="_onBtnClick('onAddBtnClick')"
+          @click.native="_onBtnClick('clockIn')"
         ></custom-button>
       </view>
     </view>
@@ -67,8 +67,8 @@ export default {
     CustomButton,
   },
   methods: {
-    _onBtnClick(eventName) {
-      this.$emit(eventName);
+    _onBtnClick(type) {
+      this.$emit('onBtnClick', type);
     },
   },
 };

@@ -1,7 +1,6 @@
 <template>
   <view class="clock-in">
-    <comp-plan-card @onAddBtnClick="_handlePlanAddClick"></comp-plan-card>
-    <clock-in-popup ref="clockInPopup"></clock-in-popup>
+    <comp-plan-card @onBtnClick="_handlePlanAddClick"></comp-plan-card>
   </view>
 </template>
 
@@ -22,12 +21,16 @@ export default {
   onLoad() {},
   mounted() {},
   methods: {
-    _showPopup() {
-      this.$refs.clockInPopup.open();
-    },
-    // 点击添加打卡按钮回调
-    _handlePlanAddClick() {
-      this._showPopup();
+    /**
+     * 点击打卡或补卡按钮回调
+     * @param {string} type
+     * replenish 补卡
+     * clockIn 打卡
+     */
+    _handlePlanAddClick(type) {
+      uni.navigateTo({
+        url: `/pages/clock-in/add?type=${type}`
+      })
     },
   },
 };
