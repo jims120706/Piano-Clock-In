@@ -42,7 +42,7 @@ export default {
             },
           })
           .then((res) => {
-            this.openid = res.result.item.openid;
+            this.openid = res.item.openid;
             log("请求成功", res);
           });
       },

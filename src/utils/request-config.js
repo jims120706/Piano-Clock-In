@@ -5,9 +5,9 @@
 
 
 const dev = {
-  api1: 'http://www.dailycheck.top:8080',
-  api2: 'http://www.dailycheck.top:8080',
-  api3: 'http://www.dailycheck.top:8080'
+  api1: 'http://47.112.209.215:8080',
+  api2: 'http://47.112.209.215:8080',
+  api3: 'http://47.112.209.215:8080'
 }
 
 const prod = {
