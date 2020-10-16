@@ -179,6 +179,7 @@
           bgColor="rgb(233, 117, 40)"
           text="添加"
           textspan="3"
+          btnPadding="30"
           :icon="require('@/static/images/submit.svg')"
           @click.native="_handlePlanSubmit"
         ></custom-button>
@@ -298,12 +299,6 @@ export default {
     };
   },
   methods: {
-    open() {
-      this.$refs.popup.open();
-    },
-    close() {
-      this.$refs.popup.close();
-    },
     // 打卡日期切换回调
     _handlePlanDateChange(event) {
       log("打卡日期切换回调", event);
@@ -312,7 +307,6 @@ export default {
     // 提交打卡记录
     _handlePlanSubmit() {
       log("提交打卡记录");
-      this.close();
     },
     // 打卡开始时间变化
     _handleStartTimePickerChange(event) {

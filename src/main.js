@@ -7,6 +7,7 @@ import Api from '@/api'
 
 Vue.config.productionTip = false
 Vue.prototype.$Api = Api
+Vue.prototype.$api = Api
 
 App.mpType = 'app'
 

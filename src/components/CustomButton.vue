@@ -30,6 +30,10 @@ export default {
     textspan: {
       type: String,
       default: '1'
+    },
+    btnPadding: {
+      type: String,
+      default: '20'
     }
   },
   computed: {
@@ -37,7 +41,7 @@ export default {
       return `pl-${this.textspan}`
     },
     btnStyle() {
-      return `color: ${this.color};background-color: ${this.bgColor};`;
+      return `color: ${this.color};background-color: ${this.bgColor};padding: ${this.btnPadding}rpx 0;`;
     },
   },
 };
@@ -47,7 +51,6 @@ export default {
 .custom-button {
   width: 100%;
   border-radius: 5px;
-  padding: 20rpx 0;
   display: flex;
   > .icon {
     width: 50rpx;

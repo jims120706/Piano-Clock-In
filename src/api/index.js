@@ -1,6 +1,8 @@
 import commonApi from './common'
+import clockInApi from './common'
 const Apis = {
-  commonApi
+  commonApi,
+  clockInApi
 }
 
 export default Apis
