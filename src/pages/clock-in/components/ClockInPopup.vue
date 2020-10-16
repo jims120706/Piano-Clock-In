@@ -294,7 +294,7 @@ export default {
       // 结束小时缓存
       endHour: todayHours.slice()[0],
       // 结束分钟缓存
-      endMin:  minutes.slice()[0],
+      endMin: minutes.slice()[0],
       // 重新渲染结束时间组件
       reRenderEndTime: false,
     };
@@ -358,7 +358,7 @@ export default {
       this.endHour = todayEndHours[endHourIndex];
       // 缓存当前结束分钟
       this.endMin = this.todayEndMins[endMinIndex];
-      log("开始小时", startHour)
+      log("开始小时", startHour);
       log("当前缓存小时", this.endHour);
       log("当前缓存分钟", this.endMin);
 
@@ -387,39 +387,24 @@ export default {
     // 生成结束分钟列表
     _generateEndMinutesList(startHour, startMinIndex) {
       // 如果开始和结束的小时值相等, 截取分钟值
-      if (startHour === this.endHour) {
+      if (startHour !== this.endHour) {
+        startMinIndex = 0;
         log("小时相等");
-        // 从分钟列表截取出结束分钟列表
-        const newMinutes = minutes.slice(startMinIndex);
-        // 找出小时在新结束小时数组中的下标，没有置为0
-        let index = newMinutes.findIndex(
-          (min) => "" + min === "" + this.endMin
-        );
-        log("分钟下标", startMinIndex, newMinutes, index);
-        // 重新缓存结束时间
-        if (index === -1) {
-          this.endMin = newMinutes[0];
-        }
-        this._reRenderEndTimeComponent();
-        // 结束选择器值的小时部分
-        this.endTimePickerList[1] = index === -1 ? 0 : index;
-        // 更新结束小时列表
-        this.todayEndMins = newMinutes;
       }
-      // 否则分钟不用变，返回原分钟列表
-      else {
-        log("小时不相等");
-        const newMinutes = minutes.slice();
-        // 找出小时在新结束小时数组中的下标，没有置为0
-        let index = newMinutes.findIndex(
-          (min) => "" + min === "" + this.endMin
-        );
-        this._reRenderEndTimeComponent();
-        // 结束选择器值的小时部分
-        this.endTimePickerList[1] = index;
-        // 更新结束小时列表
-        this.todayEndMins = minutes;
+      // 从分钟列表截取出结束分钟列表
+      const newMinutes = minutes.slice(startMinIndex);
+      // 找出小时在新结束小时数组中的下标，没有置为0
+      let index = newMinutes.findIndex((min) => "" + min === "" + this.endMin);
+      log("分钟下标", startMinIndex, newMinutes, index);
+      // 重新缓存结束时间
+      if (index === -1 && startHour === this.endHour) {
+        this.endMin = newMinutes[0];
       }
+      this._reRenderEndTimeComponent();
+      // 结束选择器值的小时部分
+      this.endTimePickerList[1] = index === -1 ? 0 : index;
+      // 更新结束小时列表
+      this.todayEndMins = newMinutes;
     },
   },
 };
