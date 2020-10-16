@@ -72,7 +72,6 @@
             <picker-view
               class="time-picker"
               @change="_handleStartTimePickerChange"
-              @pickstart="_handleStartTimePickerStart"
               :value="startTimePickerList"
             >
               <picker-view-column>
@@ -95,13 +94,44 @@
           </view>
         </view>
 
+        <!-- 结束时间占位, 防止重新渲染结束时间组件时页面的跳动 -->
         <view
-          class="weui-cell col-12"
-          v-if="mode === 'today'"
+          class="weui-cell col-12 today-end-time"
+          v-if="mode === 'today' && reRenderEndTime"
+        >
+          <view class="weui-cell__hd">
+            <label class="weui-label label">结束时间:</label>
+          </view>
+          <view class="weui-cell__bd">
+            <picker-view
+              class="time-picker"
+              :value="endTimePickerList"
+            >
+              <picker-view-column>
+                <view
+                  class="column"
+                  v-for="(item, index) in todayEndHours"
+                  :key="index"
+                  >{{ item }} 时</view
+                >
+              </picker-view-column>
+              <picker-view-column class="column">
+                <view
+                  class="column"
+                  v-for="(item, index) in todayEndMins"
+                  :key="index"
+                  >{{ item }} 分</view
+                >
+              </picker-view-column>
+            </picker-view>
+          </view>
+        </view>
+
+        <view
+          class="weui-cell col-12 today-end-time"
+          v-if="mode === 'today' && !reRenderEndTime"
           style="position: relative"
         >
-          <view class="mask1" v-if="startPickerDragging"></view>
-          <view class="mask2" v-if="startPickerDragging"></view>
           <view class="weui-cell__hd">
             <label class="weui-label label">结束时间:</label>
           </view>
@@ -224,38 +254,6 @@ export default {
     CustomButton,
   },
   computed: {
-    // 打卡结束小时选择器
-    /**
-     * 开始时间改变后，结束时间数组会发生变化，但是下标没变，所以要手动更改下标
-     */
-    // todayEndHours() {
-    //   // 从开始小时截取出结束小时
-    //   const newEndHours = todayHours.slice(this.startTimePickerList[0]);
-    //   log("newEndHours", newEndHours);
-    //   log("this.endHour", this.endHour);
-    //   // 找出小时在新数组中的下标，没有置为0
-    //   let index = newEndHours.findIndex(
-    //     (hour) => "" + hour === "" + this.endHour
-    //   );
-    //   log("打卡结束小时选择器", index);
-    //   this.endTimePickerList[0] = index === -1 ? 0 : index;
-    //   return newEndHours;
-    // },
-    // 打卡结束分钟选择器
-    // todayEndMins() {
-    //   const oldArr = [];
-    //   // 从开始分钟截取出结束分钟
-    //   const newEndMins = minutes.slice(this.startTimePickerList[1]);
-    //   // 找出分钟在新数组中的下标，没有置为0
-    //   let index = oldArr
-    //     ? newEndMins.findIndex(
-    //         (min) => min === oldArr[this.endTimePickerList[1]]
-    //       )
-    //     : -1;
-    //   // log("打卡结束分钟选择器", index);
-    //   this.endTimePickerList[1] = index === -1 ? 0 : index;
-    //   return newEndMins;
-    // },
   },
   data() {
     return {
@@ -301,6 +299,8 @@ export default {
       endHour: 0,
       // 结束分钟缓存
       endMin: 0,
+      // 重新渲染结束时间组件
+      reRenderEndTime: false,
     };
   },
   methods: {
@@ -320,9 +320,6 @@ export default {
       log("提交打卡记录");
       this.close();
     },
-    _handleStartTimePickerStart() {
-      this.startPickerDragging = true;
-    },
     // 打卡开始时间变化
     _handleStartTimePickerChange(event) {
       log("打卡开始时间变化", event.detail.value);
@@ -330,63 +327,91 @@ export default {
       const [hourIndex, minIndex] = arr;
       const startHour = todayHours[hourIndex];
 
-      this._generateEndHoursList(hourIndex);
-      // this._generateEndMinutesList(startHour, minIndex);
-      this.startPickerDragging = false;
+      this._generateEndHoursList(hourIndex, this.endTimePickerList.slice());
+      this._generateEndMinutesList(startHour, minIndex);
+    },
+    // 重新渲染时间结束组件
+    _reRenderEndTimeComponent() {
+      this.reRenderEndTime = true;
+      this.$nextTick(() => {
+        this.reRenderEndTime = false;
+      });
     },
     // 打卡结束时间变化
     _handleEndPickerChange(event) {
-      if(this.startPickerDragging) return;
       const arr = event.detail.value.slice();
+      // 原小时
       const todayEndHours = this.todayEndHours.slice();
+      // 开始值
+      const startArr = this.startTimePickerList.slice();
       log("打卡结束时间变化", arr, todayEndHours);
+      
+      // 开始值下标
+      const [startHourIndex, startMinIndex] = startArr;
+      // 结束值下标
       const [hourIndex, minIndex] = arr;
+      // 开始对应小时
+      const startHour = todayHours[hourIndex];
+      // 赋值结束值
       this.endTimePickerList = arr;
       // 缓存当前结束小时
       this.endHour = todayEndHours[hourIndex];
       // 缓存当前结束分钟
       this.endMin = this.todayEndMins[minIndex];
       log("当前缓存小时", this.endHour);
-      // log("当前缓存分钟", this.endMin);
+      log("当前缓存分钟", this.endMin);
+      
+      this._generateEndMinutesList(startHour, startMinIndex);
     },
     // 生成结束小时列表
-    _generateEndHoursList(startHourIndex) {
+    _generateEndHoursList(startHourIndex, endTimePickerList) {
       // 从小时列表截取出结束小时列表
       const newEndHours = todayHours.slice(startHourIndex);
       // 找出小时在新结束小时数组中的下标，没有置为0
       const index = newEndHours.findIndex(
         (hour) => "" + hour === "" + this.endHour
       );
-      log("找出下标", newEndHours, "          " + index);
+      // 重新缓存结束时间
+      if(index === -1) {
+        this.endHour = newEndHours[0]
+      }
       const newIndex = index === -1 ? 0 : index;
-      const minIndex = this.endTimePickerList[1];
+      const minIndex = endTimePickerList[1];
+      this._reRenderEndTimeComponent();
       // 更新结束小时列表
       this.todayEndHours = newEndHours;
-      this.$nextTick(() => {
-        // 结束选择器值的小时部分
-        this.endTimePickerList = [newIndex, minIndex];
-      });
+      // 结束选择器值的小时部分
+      this.endTimePickerList = [newIndex, minIndex];
     },
     // 生成结束分钟列表
     _generateEndMinutesList(startHour, startMinIndex) {
-      // // 如果开始和结束的小时值相等, 截取分钟值
-      // if ("" + startHour === "" + this.endHour) {
-      //   // 从分钟列表截取出结束分钟列表
-      //   const newMinutes = minutes.slice(startMinIndex);
-      //   // 找出小时在新结束小时数组中的下标，没有置为0
-      //   let index = newMinutes.findIndex(
-      //     (min) => "" + min === "" + this.endMin
-      //   );
-      //   // 结束选择器值的小时部分
-      //   this.endTimePickerList[1] = index === -1 ? 0 : index;
-      //   // 更新结束小时列表
-      //   this.todayEndMins = newMinutes;
-      // }
-      // // 否则分钟不用变，返回原分钟列表
-      // else {
-      //   // 更新结束小时列表
-      //   this.todayEndMins = minutes;
-      // }
+      // 如果开始和结束的小时值相等, 截取分钟值
+      if ("" + startHour === "" + this.endHour) {
+        log("小时相等")
+        // 从分钟列表截取出结束分钟列表
+        const newMinutes = minutes.slice(startMinIndex);
+        // 找出小时在新结束小时数组中的下标，没有置为0
+        let index = newMinutes.findIndex(
+          (min) => "" + min === "" + this.endMin
+        );
+        // 结束选择器值的小时部分
+        this.endTimePickerList[1] = index === -1 ? 0 : index;
+        // 更新结束小时列表
+        this.todayEndMins = newMinutes;
+      }
+      // 否则分钟不用变，返回原分钟列表
+      else {
+        log("小时不相等")
+        const newMinutes = minutes.slice();
+        // 找出小时在新结束小时数组中的下标，没有置为0
+        let index = newMinutes.findIndex(
+          (min) => "" + min === "" + this.endMin
+        );
+        // 结束选择器值的小时部分
+        this.endTimePickerList[1] = index;
+        // 更新结束小时列表
+        this.todayEndMins = minutes;
+      }
     },
   },
 };
@@ -416,21 +441,9 @@ export default {
         align-items: center;
         text-align: center;
       }
-      .mask1 {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        z-index: 500;
-      }
-      .mask2 {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        z-index: 600;
+    }
+    .today-end-time {
+      .placeholder-block {
       }
     }
   }
