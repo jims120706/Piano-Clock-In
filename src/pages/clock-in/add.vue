@@ -42,7 +42,11 @@
             <label class="weui-label label">打卡时间:</label>
           </view>
           <view class="weui-cell__bd">
-            <picker-view class="time-picker" @change="_handleSupplyTimeChange">
+            <picker-view
+              :value="supplyTimePickerList"
+              class="time-picker"
+              @change="_handleSupplyTimeChange"
+            >
               <picker-view-column>
                 <view
                   class="column"
@@ -248,7 +252,8 @@ export default {
      */
     const { type = "clockIn" } = options;
     this.mode = type;
-    log("api列表", this.$api);
+    // 获取系统时间生成打卡起始时间
+    this._generateTimeByCurrentTime();
   },
   computed: {},
   data() {
@@ -290,7 +295,7 @@ export default {
       // 结束选择器值
       endTimePickerList: [2, 0],
       // 补卡选择器值
-      supplyTimePickerList: [1, 0],
+      supplyTimePickerList: [0, 0],
       todayEndHours: todayHours.slice(),
       todayEndMins: minutes.slice(),
       // 结束小时缓存
@@ -304,6 +309,25 @@ export default {
     };
   },
   methods: {
+    // 根据当前时间生成开始结束时间
+    _generateTimeByCurrentTime() {
+      // 获取系统时间
+      const currentTime = new Date().toLocaleTimeString();
+      const arr = currentTime.split(":");
+      const hourStr = arr[0];
+      const currHour = hourStr.includes("上午")
+        ? parseInt(hourStr[hourStr.length - 1])
+        : parseInt(hourStr[hourStr.length - 1]) + 12;
+      const currMin = arr[1];
+      const currHourIndex = todayHours.findIndex(
+        (hour) => parseInt(hour) === currHour
+      );
+      this.startTimePickerList = [currHourIndex - 1, 0];
+      this.endTimePickerList = [currHourIndex, 0];
+      this.endHour = todayHours[currHourIndex]
+      // log("小时", currHour, currHourIndex);
+      // log("分钟", currMin);
+    },
     // 打卡日期切换回调
     _handlePlanDateChange(event) {
       log("打卡日期切换回调", event.detail.value);
