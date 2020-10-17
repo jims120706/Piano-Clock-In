@@ -31,12 +31,25 @@ function dailycheckHoursTotal(options = {}) {
     url: '/dailycheck/hoursTotal',
     ...options
   })
-} 
+}
+
+/**
+ * 打卡图表数据统计
+ * @param {number} index
+ * @param {number} size
+ */
+function getDailycheckCounts(options = {}) {
+  return requestGet({
+    url: '/dailycheck/pages',
+    ...options
+  })
+}
 
 const apis = {
   dailycheckCommit,
   dailycheckSupply,
-  dailycheckHoursTotal
+  dailycheckHoursTotal,
+  getDailycheckCounts
 }
 
 export default apis

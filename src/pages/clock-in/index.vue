@@ -1,9 +1,6 @@
 <template>
   <view class="clock-in">
-    <comp-plan-card 
-      :totalHours="totalHours"
-      @onBtnClick="_handlePlanAddClick"
-    >
+    <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
     </comp-plan-card>
   </view>
 </template>
@@ -21,12 +18,14 @@ export default {
     return {
       title: "clock-in",
       // 打卡总时长
-      totalHours: 0, 
+      totalHours: 0,
     };
   },
   onShow() {
     // 每次进入该页面都要刷新打卡总时长
-    this._refreshClockInTotalHours()
+    this._refreshClockInTotalHours();
+    // 获取图表数据
+    this._getDailycheckCounts();
   },
   mounted() {},
   methods: {
@@ -38,18 +37,35 @@ export default {
      */
     _handlePlanAddClick(type) {
       uni.navigateTo({
-        url: `/pages/clock-in/add?type=${type}`
-      })
+        url: `/pages/clock-in/add?type=${type}`,
+      });
     },
     /**
      * 刷新打卡总时长
      */
     _refreshClockInTotalHours() {
-      this.$api.clockInApi.dailycheckHoursTotal().then(res => {
-        log("打卡总时长", res.item.toFixed(1))
-        this.totalHours = parseFloat(res.item.toFixed(1))
-      })
-    }
+      this.$api.clockInApi.dailycheckHoursTotal().then((res) => {
+        log("打卡总时长", res.item.toFixed(1));
+        this.totalHours = parseFloat(res.item.toFixed(1));
+      });
+    },
+    /**
+     * 打卡图表数据
+     * @param {number} index
+     * @param {number} size
+     */
+    _getDailycheckCounts() {
+      this.$api.clockInApi
+        .getDailycheckCounts({
+          data: {
+            index: 0,
+            size: 10,
+          },
+        })
+        .then((res) => {
+          log("打卡图表数据", res.item);
+        });
+    },
   },
 };
 </script>
