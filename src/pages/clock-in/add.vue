@@ -220,6 +220,7 @@ const todayHours = [
   "23",
 ];
 const minutes = [
+  "00",
   "05",
   "10",
   "15",

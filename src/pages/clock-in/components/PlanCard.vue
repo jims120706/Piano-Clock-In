@@ -19,19 +19,19 @@
     </view>
     <view class="row row2 no-gutters align-items-center">
       <view class="col justify-content-center text-center">
-        <view class="unit">20</view>
+        <view class="unit">{{ todayHours }}h</view>
         <view class="text pt-1">今天时间</view>
       </view>
       <view class="col justify-content-center text-center">
-        <view class="unit">10h</view>
+        <view class="unit">{{ totalHours }}h</view>
         <view class="text pt-1">累计时间</view>
       </view>
       <view class="col justify-content-center text-center">
-        <view class="unit">0h</view>
+        <view class="unit">{{ yearHours }}h</view>
         <view class="text pt-1">当年时间</view>
       </view>
       <view class="col justify-content-center text-center">
-        <view class="unit">9h</view>
+        <view class="unit">{{ targetDistanceHours }}h</view>
         <view class="text pt-1">距离目标</view>
       </view>
     </view>
@@ -63,12 +63,30 @@
 <script>
 import CustomButton from "@/components/CustomButton";
 export default {
+  props: {
+    todayHours: {
+      type: Number,
+      default: 0,
+    },
+    yearHours: {
+      type: Number,
+      default: 0,
+    },
+    targetDistanceHours: {
+      type: Number,
+      default: 0,
+    },
+    totalHours: {
+      type: Number,
+      default: 0,
+    },
+  },
   components: {
     CustomButton,
   },
   methods: {
     _onBtnClick(type) {
-      this.$emit('onBtnClick', type);
+      this.$emit("onBtnClick", type);
     },
   },
 };

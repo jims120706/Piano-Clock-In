@@ -23,9 +23,20 @@ function dailycheckSupply(options = {}) {
   })
 }
 
+/**
+ * 获取打卡总时长
+ */
+function dailycheckHoursTotal(options = {}) {
+  return requestGet({
+    url: '/dailycheck/hoursTotal',
+    ...options
+  })
+} 
+
 const apis = {
   dailycheckCommit,
-  dailycheckSupply
+  dailycheckSupply,
+  dailycheckHoursTotal
 }
 
 export default apis
