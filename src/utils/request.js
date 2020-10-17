@@ -59,6 +59,7 @@ function _request(method = 'GET', options = {}) {
     if (useLoading) {
       uni.showLoading({
         title: loadingTitle,
+        mask: true
       })
     }
     uni.request({

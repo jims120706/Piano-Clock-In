@@ -43,8 +43,16 @@ function log() {
   console.log(`-----${arguments[0]}-----`, ...args);
 }
 
+function toast(options = {}) {  
+  uni.showToast({
+    icon: 'none',
+    ...options
+  })
+}
+
 export {
   getUserInfo,
   log,
-  curry
+  curry,
+  toast
 }
