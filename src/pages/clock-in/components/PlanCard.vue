@@ -13,8 +13,8 @@
         <view class="pl-2 date pt-1">2020-10-13</view>
       </view>
       <view class="my-col col-3 justify-content-center text-center">
-        <view class="time">42</view>
-        <view class="unit pt-1">hours</view>
+        <view class="time">{{ totalHours }}h</view>
+        <view class="unit pt-1">累计时间</view>
       </view>
     </view>
     <view class="row row2 no-gutters align-items-center">
@@ -22,10 +22,10 @@
         <view class="unit">{{ todayHours }}h</view>
         <view class="text pt-1">今天时间</view>
       </view>
-      <view class="col justify-content-center text-center">
+      <!-- <view class="col justify-content-center text-center">
         <view class="unit">{{ totalHours }}h</view>
         <view class="text pt-1">累计时间</view>
-      </view>
+      </view> -->
       <view class="col justify-content-center text-center">
         <view class="unit">{{ yearHours }}h</view>
         <view class="text pt-1">当年时间</view>
