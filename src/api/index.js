@@ -1,5 +1,5 @@
 import commonApi from './common'
-import clockInApi from './common'
+import clockInApi from './clockin'
 const Apis = {
   commonApi,
   clockInApi

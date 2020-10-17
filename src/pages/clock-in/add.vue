@@ -241,11 +241,12 @@ export default {
   onLoad(options = {}) {
     /**
      * 打卡模式
-     * today: 打卡
-     * someday：补卡
+     * clockIn: 打卡
+     * replenish：补卡
      */
     const { type = "clockIn" } = options;
     this.mode = type;
+    log('api列表', this.$api)
   },
   computed: {},
   data() {
@@ -303,10 +304,6 @@ export default {
     _handlePlanDateChange(event) {
       log("打卡日期切换回调", event);
       this.initDate = event.detail.value;
-    },
-    // 提交打卡记录
-    _handlePlanSubmit() {
-      log("提交打卡记录");
     },
     // 打卡开始时间变化
     _handleStartTimePickerChange(event) {
@@ -397,6 +394,40 @@ export default {
       this.endTimePickerList[1] = index === -1 ? 0 : index;
       // 更新结束小时列表
       this.todayEndMins = newMinutes;
+    },
+    // 点击提交按钮回调
+    _handlePlanSubmit() {
+      if (this.mode === "clockIn") {
+        this.dailycheckCommit();
+      } else if (this.mode === "replenish") {
+        this.dailycheckSupply();
+      }
+    },
+    // 打卡
+    dailycheckCommit() {
+      this.$api.clockInApi
+        .dailycheckCommit({
+          data: {
+            startTimeStr: "",
+            endTimeStr: "",
+          },
+        })
+        .then((res) => {
+          log("提交打卡成功", res);
+        });
+    },
+    // 补卡
+    dailycheckSupply() {
+      this.$api.clockInApi
+        .dailycheckSupply({
+          data: {
+            date: "",
+            minutes: "",
+          },
+        })
+        .then((res) => {
+          log("提交打卡成功", res);
+        });
     },
   },
 };

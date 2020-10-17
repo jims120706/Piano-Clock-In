@@ -13,6 +13,8 @@ function dailycheckCommit(options = {}) {
 
 /**
  * 补卡
+ * @param {string} date
+ * @param {string} minutes
  */
 function dailycheckSupply(options = {}) {
   return requestPost({
