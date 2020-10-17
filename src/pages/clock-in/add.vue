@@ -324,7 +324,7 @@ export default {
       );
       this.startTimePickerList = [currHourIndex - 1, 0];
       this.endTimePickerList = [currHourIndex, 0];
-      this.endHour = todayHours[currHourIndex]
+      this.endHour = todayHours[currHourIndex];
       // log("小时", currHour, currHourIndex);
       // log("分钟", currMin);
     },
@@ -461,12 +461,18 @@ export default {
           },
         })
         .then((res) => {
-          toast({
-            title: "打卡成功",
-          });
-          // uni.navigateBack()
-          log("提交打卡成功", res);
-          this.backToPrevPage();
+          if (res.success) {
+            toast({
+              title: "打卡成功",
+            });
+            // uni.navigateBack()
+            log("提交打卡成功", res);
+            this.backToPrevPage();
+          } else {
+            toast({
+              title: res.msg
+            })
+          }
         });
     },
     // 补卡
@@ -492,11 +498,18 @@ export default {
           },
         })
         .then((res) => {
-          toast({
-            title: "补卡成功",
-          });
-          log("提交补卡成功", res);
-          this.backToPrevPage();
+          if (res.success) {
+            toast({
+              title: "补卡成功",
+            });
+            // uni.navigateBack()
+            log("提交补卡成功", res);
+            this.backToPrevPage();
+          } else {
+            toast({
+              title: res.msg
+            })
+          }
         });
     },
     // 返回上一页

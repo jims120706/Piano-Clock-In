@@ -74,6 +74,7 @@ function _request(method = 'GET', options = {}) {
         }
       },
       success: (res) => {
+        res.data.success = parseInt(res.data.code / 100) !== 4 && parseInt(res.data.code / 100) !== 5;
         resolve(res.data)
       },
       fail(err) {
