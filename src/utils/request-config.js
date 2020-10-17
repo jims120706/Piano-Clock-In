@@ -27,7 +27,7 @@ const apiConfig = {
 
 // token对象
 const tokenList = {
-  'test': 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjAyNDk2NDgwLCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTYwMjg1NjQ4MCwiaWF0IjoxNjAyNDk2NDgwfQ.ZuSL5a1zUrf3Usln8X8stHNJRRZ3cmJ1BAisP2m_6Ek',
+  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjAyOTIxNjY4LCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTcwMzI4MTY2OCwiaWF0IjoxNjAyOTIxNjY4fQ.RnJfpRyrWIIho_hmQBtAh6wizQjyP7WfDhJF8FHQ1bI"
 }
 
 // 本地联调的baseUrl列表，一般他们不会关机，所以不用改

@@ -219,7 +219,7 @@ const todayHours = [
   "23",
 ];
 const minutes = [
-  "5",
+  "05",
   "10",
   "15",
   "20",
@@ -246,7 +246,7 @@ export default {
      */
     const { type = "clockIn" } = options;
     this.mode = type;
-    log('api列表', this.$api)
+    log("api列表", this.$api);
   },
   computed: {},
   data() {
@@ -405,11 +405,25 @@ export default {
     },
     // 打卡
     dailycheckCommit() {
+      // 开始时分
+      const [startHourIndex, startMinIndex] = this.startTimePickerList.slice();
+      const startHour = todayHours[startHourIndex];
+      const startMin = minutes[startMinIndex];
+      // 结束时分
+      const [endHourIndex, endMinIndex] = this.endTimePickerList.slice();
+      const endHour = this.todayEndHours[endHourIndex];
+      const endMin = this.todayEndMins[endMinIndex];
+
+      // 拼接字符串
+      const startTimeStr = `${this.initDate} ${startHour}:${startMin}`
+      const endTimeStr = `${this.initDate} ${endHour}:${endMin}`
+      
+      // 请求打卡接口
       this.$api.clockInApi
         .dailycheckCommit({
           data: {
-            startTimeStr: "",
-            endTimeStr: "",
+            startTimeStr,
+            endTimeStr,
           },
         })
         .then((res) => {
