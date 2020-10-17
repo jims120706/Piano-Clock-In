@@ -42,8 +42,7 @@
             <label class="weui-label label">打卡时间:</label>
           </view>
           <view class="weui-cell__bd">
-            <picker-view class="time-picker" 
-              @change="_handleSupplyTimeChange">
+            <picker-view class="time-picker" @change="_handleSupplyTimeChange">
               <picker-view-column>
                 <view
                   class="column"
@@ -235,7 +234,7 @@ const minutes = [
 ];
 // 上一次操作结束小时的缓存
 const lastEndHoursCache = [];
-const initDate = new Date().toLocaleDateString().replace(/\//gi, "-")
+const initDate = new Date().toLocaleDateString().replace(/\//gi, "-");
 
 export default {
   components: {
@@ -287,11 +286,11 @@ export default {
       todayHours,
       minutes,
       // 开始选择器值
-      startTimePickerList: [0, 0],
+      startTimePickerList: [1, 0],
       // 结束选择器值
-      endTimePickerList: [0, 0],
+      endTimePickerList: [2, 0],
       // 补卡选择器值
-      supplyTimePickerList: [0,0],
+      supplyTimePickerList: [1, 0],
       todayEndHours: todayHours.slice(),
       todayEndMins: minutes.slice(),
       // 结束小时缓存
@@ -327,7 +326,7 @@ export default {
     // 补卡时间变化回调
     _handleSupplyTimeChange(event) {
       log("补卡时间变化", event.detail.value);
-      const arr = event.detail.value.slice()
+      const arr = event.detail.value.slice();
       this.supplyTimePickerList = arr;
     },
     // 重新渲染时间结束组件
@@ -426,8 +425,8 @@ export default {
       const endMin = this.todayEndMins[endMinIndex];
 
       // 拼接字符串
-      const startTimeStr = `${this.initDate} ${startHour}:${startMin}`
-      const endTimeStr = `${this.initDate} ${endHour}:${endMin}`
+      const startTimeStr = `${this.initDate} ${startHour}:${startMin}`;
+      const endTimeStr = `${this.initDate} ${endHour}:${endMin}`;
 
       // 请求打卡接口
       this.$api.clockInApi
@@ -439,23 +438,27 @@ export default {
         })
         .then((res) => {
           toast({
-            title: "打卡成功"
-          })
+            title: "打卡成功",
+          });
           // uni.navigateBack()
           log("提交打卡成功", res);
+          this.backToPrevPage();
         });
     },
     // 补卡
     dailycheckSupply() {
-      const [supplyHourIndex, supplyMinIndex] = this.supplyTimePickerList.slice()
+      const [
+        supplyHourIndex,
+        supplyMinIndex,
+      ] = this.supplyTimePickerList.slice();
       // 补卡时分
       const supplyHour = this.somedayHours[supplyHourIndex];
       const supplyMin = parseInt(minutes[supplyMinIndex]);
-      log("补卡时间", supplyHour, supplyMin)
+      log("补卡时间", supplyHour, supplyMin);
       // 转换小时为分钟数
-      const tarnsHourToMins = supplyHour === '--' ? 0 : parseInt(supplyHour)
+      const tarnsHourToMins = supplyHour === "--" ? 0 : parseInt(supplyHour);
       // 补卡总分钟数
-      const totalMins = tarnsHourToMins * 60 + supplyMin
+      const totalMins = tarnsHourToMins * 60 + supplyMin;
       // 请求补卡接口
       this.$api.clockInApi
         .dailycheckSupply({
@@ -466,10 +469,17 @@ export default {
         })
         .then((res) => {
           toast({
-            title: "补卡成功"
-          })
+            title: "补卡成功",
+          });
           log("提交补卡成功", res);
+          this.backToPrevPage();
         });
+    },
+    // 返回上一页
+    backToPrevPage() {
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1000);
     },
   },
 };
