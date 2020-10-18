@@ -2,7 +2,13 @@
   <view class="clock-in">
     <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
     </comp-plan-card>
-    <u-charts></u-charts>
+    <view class="container p-0">
+      <view class="row no-gutters ">
+        <view class="col">
+          <u-charts :opts="chartOptions"></u-charts>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -10,18 +16,25 @@
 import { log } from "@/utils/utils";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
-import UCharts from '@/components/u-charts'
+import UCharts from "@/components/UCharts";
+import chartMockData from "@/utils/chart-mock.json";
+log("chartMockData", chartMockData);
+
 export default {
   components: {
     CompPlanCard,
     ClockInPopup,
-    UCharts
+    UCharts,
   },
   data() {
     return {
       title: "clock-in",
       // 打卡总时长
       totalHours: 0,
+      chartOptions: {
+        categories: chartMockData.LineA.categories,
+        series: chartMockData.LineA.series,
+      },
     };
   },
   onShow() {
