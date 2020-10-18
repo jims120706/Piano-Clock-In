@@ -410,7 +410,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .clock-in-popup {
   color: #323233;
   .date {

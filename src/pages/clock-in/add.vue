@@ -522,7 +522,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .clock-in-add {
   width: 100%;
   padding: 0 40rpx;

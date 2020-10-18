@@ -2,6 +2,7 @@
   <view class="clock-in">
     <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
     </comp-plan-card>
+    <u-charts></u-charts>
   </view>
 </template>
 
@@ -9,10 +10,12 @@
 import { log } from "@/utils/utils";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
+import UCharts from '@/components/u-charts'
 export default {
   components: {
     CompPlanCard,
     ClockInPopup,
+    UCharts
   },
   data() {
     return {

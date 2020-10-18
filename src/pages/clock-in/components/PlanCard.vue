@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .plan-card {
   border-radius: 10px;
   background: white;
