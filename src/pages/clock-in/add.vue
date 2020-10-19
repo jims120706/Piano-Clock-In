@@ -1,5 +1,5 @@
 <template>
-  <popup-container title="添加打卡记录" ref="popup" class="clock-in-popup">
+  <view class="clock-in-add">
     <view class="container p-0">
       <view class="date row no-gutters">
         <picker
@@ -8,7 +8,7 @@
           start="2000-01-01"
           :end="initDate"
           @change="_handlePlanDateChange"
-          v-if="mode === 'someday'"
+          v-if="mode === 'replenish'"
         >
           <!-- 补卡模式 -->
           <view class="weui-cell col-12">
@@ -26,7 +26,7 @@
           </view>
         </picker>
         <!-- 打卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'today'">
+        <view class="weui-cell col-12" v-if="mode === 'clockIn'">
           <view class="weui-cell__hd">
             <label class="weui-label label">打卡日期:</label>
           </view>
@@ -37,12 +37,16 @@
       </view>
       <view class="time row no-gutters">
         <!-- 补卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'someday'">
+        <view class="weui-cell col-12" v-if="mode === 'replenish'">
           <view class="weui-cell__hd">
             <label class="weui-label label">打卡时间:</label>
           </view>
           <view class="weui-cell__bd">
-            <picker-view class="time-picker">
+            <picker-view
+              :value="supplyTimePickerList"
+              class="time-picker"
+              @change="_handleSupplyTimeChange"
+            >
               <picker-view-column>
                 <view
                   class="column"
@@ -64,7 +68,7 @@
         </view>
 
         <!-- 打卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'today'">
+        <view class="weui-cell col-12" v-if="mode === 'clockIn'">
           <view class="weui-cell__hd">
             <label class="weui-label label">开始时间:</label>
           </view>
@@ -97,7 +101,7 @@
         <!-- 结束时间占位, 防止重新渲染结束时间组件时页面的跳动 -->
         <view
           class="weui-cell col-12 today-end-time"
-          v-if="mode === 'today' && reRenderEndTime"
+          v-if="mode === 'clockIn' && reRenderEndTime"
         >
           <view class="weui-cell__hd">
             <label class="weui-label label">结束时间:</label>
@@ -126,7 +130,7 @@
 
         <view
           class="weui-cell col-12 today-end-time"
-          v-if="mode === 'today' && !reRenderEndTime"
+          v-if="mode === 'clockIn' && !reRenderEndTime"
           style="position: relative"
         >
           <view class="weui-cell__hd">
@@ -179,18 +183,18 @@
           bgColor="rgb(233, 117, 40)"
           text="添加"
           textspan="3"
+          btnPadding="30"
           :icon="require('@/static/images/submit.svg')"
           @click.native="_handlePlanSubmit"
         ></custom-button>
       </view>
     </view>
-  </popup-container>
+  </view>
 </template>
 
 <script>
-import { log } from "@/utils/utils";
+import { log, toast } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
-import PopupContainer from "@/components/Popup";
 
 const todayHours = [
   "00",
@@ -219,7 +223,8 @@ const todayHours = [
   "23",
 ];
 const minutes = [
-  "5",
+  "00",
+  "05",
   "10",
   "15",
   "20",
@@ -233,27 +238,27 @@ const minutes = [
 ];
 // 上一次操作结束小时的缓存
 const lastEndHoursCache = [];
+const initDate = new Date().toLocaleDateString().replace(/\//gi, "-");
 
 export default {
-  props: {
+  components: {
+    CustomButton,
+  },
+  onLoad(options = {}) {
     /**
      * 打卡模式
-     * today: 打卡
-     * someday：补卡
+     * clockIn: 打卡
+     * replenish：补卡
      */
-    mode: {
-      type: String,
-      default: "today",
-    },
-  },
-  components: {
-    PopupContainer,
-    CustomButton,
+    const { type = "clockIn" } = options;
+    this.mode = type;
+    // 获取系统时间生成打卡起始时间
+    this._generateTimeByCurrentTime();
   },
   computed: {},
   data() {
     return {
-      initDate: new Date().toLocaleDateString().replace(/\//gi, "-"),
+      initDate,
       // 补卡小时数组
       somedayHours: [
         "--",
@@ -286,9 +291,11 @@ export default {
       todayHours,
       minutes,
       // 开始选择器值
-      startTimePickerList: [0, 0],
+      startTimePickerList: [1, 0],
       // 结束选择器值
-      endTimePickerList: [0, 0],
+      endTimePickerList: [2, 0],
+      // 补卡选择器值
+      supplyTimePickerList: [0, 0],
       todayEndHours: todayHours.slice(),
       todayEndMins: minutes.slice(),
       // 结束小时缓存
@@ -297,24 +304,34 @@ export default {
       endMin: minutes.slice()[0],
       // 重新渲染结束时间组件
       reRenderEndTime: false,
+      // 打卡模式
+      mode: "",
     };
   },
   methods: {
-    open() {
-      this.$refs.popup.open();
-    },
-    close() {
-      this.$refs.popup.close();
+    // 根据当前时间生成开始结束时间
+    _generateTimeByCurrentTime() {
+      // 获取系统时间
+      const currentTime = new Date().toLocaleTimeString();
+      const arr = currentTime.split(":");
+      const hourStr = arr[0];
+      const currHour = hourStr.includes("上午")
+        ? parseInt(hourStr[hourStr.length - 1])
+        : parseInt(hourStr[hourStr.length - 1]) + 12;
+      const currMin = arr[1];
+      const currHourIndex = todayHours.findIndex(
+        (hour) => parseInt(hour) === currHour
+      );
+      this.startTimePickerList = [currHourIndex - 1, 0];
+      this.endTimePickerList = [currHourIndex, 0];
+      this.endHour = todayHours[currHourIndex];
+      // log("小时", currHour, currHourIndex);
+      // log("分钟", currMin);
     },
     // 打卡日期切换回调
     _handlePlanDateChange(event) {
-      log("打卡日期切换回调", event);
+      log("打卡日期切换回调", event.detail.value);
       this.initDate = event.detail.value;
-    },
-    // 提交打卡记录
-    _handlePlanSubmit() {
-      log("提交打卡记录");
-      this.close();
     },
     // 打卡开始时间变化
     _handleStartTimePickerChange(event) {
@@ -329,6 +346,12 @@ export default {
         this.endTimePickerList.slice()
       );
       this._generateEndMinutesList(startHour, startMinIndex);
+    },
+    // 补卡时间变化回调
+    _handleSupplyTimeChange(event) {
+      log("补卡时间变化", event.detail.value);
+      const arr = event.detail.value.slice();
+      this.supplyTimePickerList = arr;
     },
     // 重新渲染时间结束组件
     _reRenderEndTimeComponent() {
@@ -406,12 +429,104 @@ export default {
       // 更新结束小时列表
       this.todayEndMins = newMinutes;
     },
+    // 点击提交按钮回调
+    _handlePlanSubmit() {
+      if (this.mode === "clockIn") {
+        this.dailycheckCommit();
+      } else if (this.mode === "replenish") {
+        this.dailycheckSupply();
+      }
+    },
+    // 打卡
+    dailycheckCommit() {
+      // 开始时分
+      const [startHourIndex, startMinIndex] = this.startTimePickerList.slice();
+      const startHour = todayHours[startHourIndex];
+      const startMin = minutes[startMinIndex];
+      // 结束时分
+      const [endHourIndex, endMinIndex] = this.endTimePickerList.slice();
+      const endHour = this.todayEndHours[endHourIndex];
+      const endMin = this.todayEndMins[endMinIndex];
+
+      // 拼接字符串
+      const startTimeStr = `${this.initDate} ${startHour}:${startMin}`;
+      const endTimeStr = `${this.initDate} ${endHour}:${endMin}`;
+
+      // 请求打卡接口
+      this.$api.clockInApi
+        .dailycheckCommit({
+          data: {
+            startTimeStr,
+            endTimeStr,
+          },
+        })
+        .then((res) => {
+          if (res.success) {
+            toast({
+              title: "打卡成功",
+            });
+            // uni.navigateBack()
+            log("提交打卡成功", res);
+            this.backToPrevPage();
+          } else {
+            toast({
+              title: res.msg
+            })
+          }
+        });
+    },
+    // 补卡
+    dailycheckSupply() {
+      const [
+        supplyHourIndex,
+        supplyMinIndex,
+      ] = this.supplyTimePickerList.slice();
+      // 补卡时分
+      const supplyHour = this.somedayHours[supplyHourIndex];
+      const supplyMin = parseInt(minutes[supplyMinIndex]);
+      log("补卡时间", supplyHour, supplyMin);
+      // 转换小时为分钟数
+      const tarnsHourToMins = supplyHour === "--" ? 0 : parseInt(supplyHour);
+      // 补卡总分钟数
+      const totalMins = tarnsHourToMins * 60 + supplyMin;
+      // 请求补卡接口
+      this.$api.clockInApi
+        .dailycheckSupply({
+          data: {
+            date: this.initDate,
+            minutes: totalMins,
+          },
+        })
+        .then((res) => {
+          if (res.success) {
+            toast({
+              title: "补卡成功",
+            });
+            // uni.navigateBack()
+            log("提交补卡成功", res);
+            this.backToPrevPage();
+          } else {
+            toast({
+              title: res.msg
+            })
+          }
+        });
+    },
+    // 返回上一页
+    backToPrevPage() {
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1000);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.clock-in-popup {
+.clock-in-add {
+  width: 100%;
+  padding: 0 40rpx;
+  box-sizing: border-box;
   color: #323233;
   .date {
     .label {

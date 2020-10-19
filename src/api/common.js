@@ -5,13 +5,15 @@ import { requestGet, requestPost } from '@/utils/request'
 function getSessionKey(options = {}) {
   return requestGet({
     url: '/wechat/getSessionKey',
+    isToken: false,
     ...options
   })
 }
 
 function login(options = {}) {
   return requestPost({
-    url: '/authentication/login',
+    url: '/authentication/login', 
+    isToken: false,
     ...options
   })
 }

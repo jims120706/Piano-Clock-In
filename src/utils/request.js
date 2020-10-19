@@ -1,4 +1,3 @@
-
 import {
   curry
 } from './utils';
@@ -28,11 +27,11 @@ function _request(method = 'GET', options = {}) {
   });
   let url = options.url || '';
   let data = options.data || {};
-  let useLoading = '' + options.useLoading ? options.useLoading : true;
+  let useLoading = ('' + options.useLoading === 'false' || '' + options.useLoading === 'true') ? options.useLoading : true;
   const {
     responseType = 'text',
-    isToken = true, // 是否需要token请求
-    loadingTitle = '加载中'
+      isToken = true, // 是否需要token请求
+      loadingTitle = '加载中'
   } = options;
   /**
    * 如果参数必须要放在url中，对url进行处理
@@ -60,7 +59,7 @@ function _request(method = 'GET', options = {}) {
     if (useLoading) {
       uni.showLoading({
         title: loadingTitle,
-        icon: 'none'
+        mask: true
       })
     }
     uni.request({
@@ -75,6 +74,7 @@ function _request(method = 'GET', options = {}) {
         }
       },
       success: (res) => {
+        res.data.success = parseInt(res.data.code / 100) !== 4 && parseInt(res.data.code / 100) !== 5;
         resolve(res.data)
       },
       fail(err) {

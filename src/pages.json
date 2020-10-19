@@ -11,6 +11,12 @@
 			"style": {
 				"navigationBarTitleText": "练习打卡"
 			}
+		},
+		{
+			"path": "pages/clock-in/add",
+			"style": {
+				"navigationBarTitleText": "添加打卡"
+			}
 		}
 	],
 	"tabBar": {

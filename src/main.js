@@ -11,6 +11,7 @@ Vue.component('Loading', LoadingComponent);
 
 Vue.config.productionTip = false
 Vue.prototype.$Api = Api
+Vue.prototype.$api = Api
 
 App.mpType = 'app'
 

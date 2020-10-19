@@ -1,8 +1,14 @@
 <template>
   <view class="clock-in">
-    <comp-plan-card @onAddBtnClick="_handlePlanAddClick"></comp-plan-card>
-    <clock-in-popup ref="clockInPopup"></clock-in-popup>
-    <loading ref="loading"></loading>
+    <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
+    </comp-plan-card>
+    <view class="container p-0">
+      <view class="row no-gutters ">
+        <view class="col">
+          <u-charts :opts="chartOptions"></u-charts>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -10,28 +16,71 @@
 import { log } from "@/utils/utils";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
+import UCharts from "@/components/UCharts";
+import chartMockData from "@/utils/chart-mock.json";
+log("chartMockData", chartMockData);
+
 export default {
   components: {
     CompPlanCard,
     ClockInPopup,
+    UCharts,
   },
   data() {
     return {
       title: "clock-in",
+      // 打卡总时长
+      totalHours: 0,
+      chartOptions: {
+        categories: chartMockData.LineA.categories,
+        series: chartMockData.LineA.series,
+      },
     };
   },
-  onLoad() {},
-  mounted() {
-    log('loading', this.$refs.loading)
-    this.$refs.loading.show()
+  onShow() {
+    // 每次进入该页面都要刷新打卡总时长
+    this._refreshClockInTotalHours();
+    // 获取图表数据
+    this._getDailycheckCounts();
   },
+  mounted() {},
   methods: {
-    _showPopup() {
-      this.$refs.clockInPopup.open();
+    /**
+     * 点击打卡或补卡按钮回调
+     * @param {string} type
+     * replenish 补卡
+     * clockIn 打卡
+     */
+    _handlePlanAddClick(type) {
+      uni.navigateTo({
+        url: `/pages/clock-in/add?type=${type}`,
+      });
     },
-    // 点击添加打卡按钮回调
-    _handlePlanAddClick() {
-      this._showPopup();
+    /**
+     * 刷新打卡总时长
+     */
+    _refreshClockInTotalHours() {
+      this.$api.clockInApi.dailycheckHoursTotal().then((res) => {
+        log("打卡总时长", res.item.toFixed(1));
+        this.totalHours = parseFloat(res.item.toFixed(1));
+      });
+    },
+    /**
+     * 打卡图表数据
+     * @param {number} index
+     * @param {number} size
+     */
+    _getDailycheckCounts() {
+      this.$api.clockInApi
+        .getDailycheckCounts({
+          data: {
+            index: 0,
+            size: 10,
+          },
+        })
+        .then((res) => {
+          log("打卡图表数据", res.item);
+        });
     },
   },
 };

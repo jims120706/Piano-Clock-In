@@ -5,9 +5,9 @@
 
 
 const dev = {
-  api1: 'http://www.dailycheck.top:8080',
-  api2: 'http://www.dailycheck.top:8080',
-  api3: 'http://www.dailycheck.top:8080'
+  api1: 'http://47.112.209.215:8080',
+  api2: 'http://47.112.209.215:8080',
+  api3: 'http://47.112.209.215:8080'
 }
 
 const prod = {
@@ -27,10 +27,7 @@ const apiConfig = {
 
 // token对象
 const tokenList = {
-  'xiaohuaha1': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWM3hPTmFGTHNIeC1ySjMqSXdANk8iLCJuYmYiOjE1NzE4MTY4NjAsIm9wZW5pZCI6Ik4vQSIsInJvbGVzIjpbXSwiaXNzIjoiY29tLnlhZWhlciIsImV4cCI6NDEwMjQ0NDc5OSwiaWF0IjoxNjcxODE2ODYwfQ.ep8a6V-_Ng6O5zEPv1EEsuMYiHMfhha6gc_iZ3Ez0is',
-  'xiaoxiao': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI5ZmViUXlnaTpWWUJSWlBmN1U1SmYiLCJuYmYiOjE1OTU5OTQ4MjIsInJvbGVzIjpbXSwiaXNzIjoidXNlcmluZm8tdmF1bHQiLCJleHAiOjE2OTYwMDkyMjIsImlhdCI6MTU5NTk5NDgyMn0.n8OdKAYQs0bXNIu4dP-pz5JyFVMs3SPvdVYCEUpo1Pg',
-  'zhoujun': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJJflFudDM5bWluTWF1dkxALlQ2QG4iLCJuYmYiOjE1NzE4MTY4NjAsIm9wZW5pZCI6Ik4vQSIsInJvbGVzIjpbXSwiaXNzIjoiY29tLnlhZWhlciIsImV4cCI6NDEwMjQ0NDc5OSwiaWF0IjoxNjcxODE2ODYwfQ.Q9wUp2BznEeik7xBkaoV0DpUnkbMe8FOw3_YM921y0Q',
-  'xiaoxiao_new': 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJRbXVxWGNkZXhXNFE2OFQyR0RtZkMiLCJuYmYiOjE1OTU5OTQ4MjIsInJvbGVzIjpbXSwiaXNzIjoidXNlcmluZm8tdmF1bHQiLCJleHAiOjE2OTYwMDkyMjIsImlhdCI6MTU5NTk5NDgyMn0.-ZZ_bCFQVFXbpr7-HuXA1JzsnJQQUn96Vdle-YC8ajM'
+  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjAyOTIxNjY4LCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTcwMzI4MTY2OCwiaWF0IjoxNjAyOTIxNjY4fQ.RnJfpRyrWIIho_hmQBtAh6wizQjyP7WfDhJF8FHQ1bI"
 }
 
 // 本地联调的baseUrl列表，一般他们不会关机，所以不用改
@@ -52,7 +49,7 @@ if (!env) {
 }
 
 export default apiConfig[env]
-export const useMockToken = false // 是否使用mockToken
+export const useMockToken = true // 是否使用mockToken
 export const useLocalBaseUrl = false // 是否使用本地url作为请求的baseUrl，本地联调开发时用
-export const mockToken = tokenList['xiaoxiao']// 写死的mockToken
+export const mockToken = tokenList['test']// 写死的mockToken
 export const localBaseUrl = localBaseUrlList['kai'] // 本地联调时的baseUrl
