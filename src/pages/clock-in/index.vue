@@ -12,7 +12,7 @@
       ></uni-segmented-control>
     </view>
     <view class="container p-0">
-      <view class="row no-gutters mt-2" v-if="current === 0">
+      <view class="row no-gutters mt-2" v-show="current === 0">
         <view class="col">
           <e-charts
             canvasId="week"
@@ -24,7 +24,7 @@
           ></e-charts>
         </view>
       </view>
-      <view class="row no-gutters mt-2" v-if="current === 1">
+      <view class="row no-gutters mt-2" v-show="current === 1">
         <view class="col">
           <e-charts
             canvasId="month"
@@ -36,7 +36,7 @@
           ></e-charts>
         </view>
       </view>
-      <view class="row no-gutters mt-2" v-if="current === 2">
+      <view class="row no-gutters mt-2" v-show="current === 2">
         <view class="col">
           <e-charts
             canvasId="year"
@@ -230,7 +230,7 @@ export default {
      */
     _renderChart() {
       rpxToPx(80).then((res) => {
-        this.chartWidth = res.screenWidth - res.trans;
+        this.chartWidth = res.windowWidth - res.trans;
         this.showChart = true;
       });
     },
