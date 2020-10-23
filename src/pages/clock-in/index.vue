@@ -16,7 +16,7 @@
         <view class="col">
           <u-charts
             canvasId="week"
-            :opts="chartOptions"
+            :opts="weekOptions"
             :cWidth="chartWidth"
             v-if="showChart"
           ></u-charts>
@@ -26,7 +26,7 @@
         <view class="col">
           <u-charts
             canvasId="month"
-            :opts="chartOptions"
+            :opts="monthOptions"
             :cWidth="chartWidth"
             v-if="showChart"
           ></u-charts>
@@ -36,7 +36,7 @@
         <view class="col">
           <u-charts
             canvasId="year"
-            :opts="chartOptions"
+            :opts="yearOptions"
             :cWidth="chartWidth"
             v-if="showChart"
           ></u-charts>
@@ -53,6 +53,15 @@ import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
 import UCharts from "@/components/UCharts";
 import chartMockData from "@/utils/chart-mock.json";
+
+// 生成随机数值
+function getRandomArr(arrLen, maxValue = 100) {
+  let arr = [];
+  for(let i = 0; i < arrLen; i++) {
+    arr.push(parseInt(Math.random() * maxValue) + 1);
+  }
+  return arr
+}
 
 export default {
   components: {
@@ -71,22 +80,74 @@ export default {
       chartWidth: 0,
       // 打卡总时长
       totalHours: 0,
-      chartOptions: {
+      weekOptions: {
+        categories: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+        series: [
+          {
+            name: "",
+            data: getRandomArr(7),
+          },
+        ],
+      },
+      monthOptions: {
         categories: [
-          "2012",
-          "2013",
-          "2014",
-          "2015",
-          "2016",
-          "2017",
-          "2018",
-          "2019",
-          "2020",
+          "1号",
+          "2号",
+          "3号",
+          "4号",
+          "5号",
+          "6号",
+          "7号",
+          "8号",
+          "9号",
+          "10号",
+          "11号",
+          "12号",
+          "13号",
+          "14号",
+          "15号",
+          "16号",
+          "17号",
+          "18号",
+          "19号",
+          "20号",
+          "21号",
+          "22号",
+          "23号",
+          "24号",
+          "25号",
+          "26号",
+          "27号",
+          "28号",
+          "29号",
+          "30号",
         ],
         series: [
           {
-            name: "成交量A",
-            data: [35, 8, 25, 37, 4, 20, 13, 14, 15, 16],
+            name: "",
+            data: getRandomArr(30),
+          },
+        ],
+      },
+      yearOptions: {
+        categories: [
+          "1月",
+          "2月",
+          "3月",
+          "4月",
+          "5月",
+          "6月",
+          "7月",
+          "8月",
+          "9月",
+          "10月",
+          "11月",
+          "12月",
+        ],
+        series: [
+          {
+            name: "",
+            data: getRandomArr(12),
           },
         ],
       },
