@@ -11,6 +11,10 @@ import mpvueEcharts from "./mpvue-charts";
 
 export default {
   props: {
+    canvasId: {
+      type: String,
+      required: true,
+    },
     cWidth: {
       type: Number,
       default: 375,
@@ -80,10 +84,12 @@ export default {
           axisLabel: {
             show: true,
             interval: 0,
-            rotate: 30,
+            rotate: 40,
             textStyle: {
               color: "#333",
             },
+            align: "center",
+            padding: [10, 10, 2, 2],
           },
         },
         yAxis: {
@@ -97,6 +103,7 @@ export default {
         ],
       };
       option = Object.assign({}, option, this.options);
+      console.log("this.canvasId", this.canvasId, option);
       chart.setOption(option);
       this.$refs.chart.setChart(chart);
     },

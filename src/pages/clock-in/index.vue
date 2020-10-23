@@ -19,7 +19,7 @@
             :categories="weekOptions.categories"
             :datas="weekOptions.datas"
             :cWidth="chartWidth"
-            :option="weekOptions.option"
+            :options="weekOptions.option"
             v-if="showChart"
           ></e-charts>
         </view>
@@ -31,7 +31,7 @@
             :categories="monthOptions.categories"
             :datas="monthOptions.datas"
             :cWidth="chartWidth"
-            :option="monthOptions.option"
+            :options="monthOptions.option"
             v-if="showChart"
           ></e-charts>
         </view>
@@ -43,7 +43,7 @@
             :categories="yearOptions.categories"
             :datas="yearOptions.datas"
             :cWidth="chartWidth"
-            :option="yearOptions.option"
+            :options="yearOptions.option"
             v-if="showChart"
           ></e-charts>
         </view>
@@ -135,15 +135,21 @@ export default {
         ],
         datas: getRandomArr(30),
         option: {
+          grid: {
+            left: "10%",
+            right: "10%",
+            top: "10%",
+            bottom: "20%",
+          },
           dataZoom: [
             {
               type: "slider",
               show: true,
               xAxisIndex: [0],
-              left: "9%",
+              bottom: "10%",
               bottom: -5,
               start: 0,
-              end: 10, //初始化滚动条
+              end: 30, //初始化滚动条
             },
           ],
         },
