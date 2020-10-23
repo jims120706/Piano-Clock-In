@@ -98,13 +98,11 @@ export default {
         series: this.opts.series,
         enableScroll: true,
         xAxis: {
-          type: 'value',
           disableGrid: true,
           itemCount: 4,
           scrollShow: true,
         },
         yAxis: {
-          type: 'category',
           //disabled:true
         },
         dataLabel: true,

@@ -12,6 +12,23 @@ function getUserInfo(options = {}) {
   })
 }
 
+/** 
+ * 获取系统信息
+ * 
+*/
+async function getSystemInfo() {
+  return new Promise((resolve, reject) => { 
+    uni.getSystemInfo({
+      success: (res) => {
+        resolve(res)
+      },
+      fail: (err) => {
+        reject(err)
+      }
+    })
+  })
+}
+
 // 柯理化函数
 function curry(fn, args) {
   var length = fn.length; // 函数的形数
@@ -50,9 +67,38 @@ function toast(options = {}) {
   })
 }
 
+/**
+ * 
+ * rpx换算px (屏幕宽度/750)
+ * 1px = 屏幕宽度/750 * rpx
+ */
+async function rpxToPx(rpx) {
+  const res = await getSystemInfo();
+  return {
+    trans: res.screenWidth / 750 * rpx,
+    ...res
+  };
+}
+
+/**
+ * 
+ * px换算rpx (750/屏幕宽度) 
+ * 1rpx = 750/屏幕宽度 * px
+ */
+async function pxToRpx(px) {
+  const res = await getSystemInfo();
+  return {
+    trans: 750 / res.screenWidth * px,
+    ...res
+  };
+}
+
 export {
   getUserInfo,
   log,
   curry,
-  toast
+  toast,
+  getSystemInfo,
+  rpxToPx,
+  pxToRpx
 }

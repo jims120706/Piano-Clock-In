@@ -3,9 +3,13 @@
     <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
     </comp-plan-card>
     <view class="container p-0">
-      <view class="row no-gutters ">
+      <view class="row no-gutters">
         <view class="col">
-          <u-charts :opts="chartOptions"></u-charts>
+          <u-charts
+            :opts="chartOptions"
+            :cWidth="chartWidth"
+            v-if="showChart"
+          ></u-charts>
         </view>
       </view>
     </view>
@@ -13,12 +17,11 @@
 </template>
 
 <script>
-import { log } from "@/utils/utils";
+import { log, getSystemInfo, rpxToPx } from "@/utils/utils";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
 import UCharts from "@/components/UCharts";
 import chartMockData from "@/utils/chart-mock.json";
-log("chartMockData", chartMockData);
 
 export default {
   components: {
@@ -29,12 +32,32 @@ export default {
   data() {
     return {
       title: "clock-in",
+      chartWidth: 0,
       // 打卡总时长
       totalHours: 0,
       chartOptions: {
-        categories: chartMockData.LineA.categories,
-        series: chartMockData.LineA.series,
+        categories: [
+          "2012",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+        ],
+        series: [
+          {
+            name: "成交量A",
+            data: [35, 8, 25, 37, 4, 20, 13, 14, 15, 16],
+          },
+        ],
       },
+      systemInfo: {},
+      // cs设置了 0 40rpx, X2
+      chartPadding: 0,
+      showChart: false,
     };
   },
   onShow() {
@@ -42,6 +65,14 @@ export default {
     this._refreshClockInTotalHours();
     // 获取图表数据
     this._getDailycheckCounts();
+  },
+  onLoad() {
+    rpxToPx(80).then((res) => {
+      log("padding", res);
+      this.chartWidth = res.screenWidth - res.trans;
+      log("this.chartWidth", this.chartWidth);
+      this.showChart = true;
+    });
   },
   mounted() {},
   methods: {
