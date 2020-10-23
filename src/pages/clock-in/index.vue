@@ -14,32 +14,53 @@
     <view class="container p-0">
       <view class="row no-gutters mt-2" v-if="current === 0">
         <view class="col">
-          <u-charts
+          <e-charts
             canvasId="week"
-            :opts="weekOptions"
+            :categories="weekOptions.categories"
+            :datas="weekOptions.datas"
             :cWidth="chartWidth"
+            :option="weekOptions.option"
             v-if="showChart"
-          ></u-charts>
+          ></e-charts>
         </view>
       </view>
       <view class="row no-gutters mt-2" v-if="current === 1">
         <view class="col">
-          <u-charts
+          <e-charts
             canvasId="month"
-            :opts="monthOptions"
+            :categories="monthOptions.categories"
+            :datas="monthOptions.datas"
             :cWidth="chartWidth"
+            :option="monthOptions.option"
             v-if="showChart"
-          ></u-charts>
+          ></e-charts>
         </view>
       </view>
       <view class="row no-gutters mt-2" v-if="current === 2">
         <view class="col">
-          <u-charts
+          <e-charts
             canvasId="year"
-            :opts="yearOptions"
+            :categories="yearOptions.categories"
+            :datas="yearOptions.datas"
             :cWidth="chartWidth"
+            :option="yearOptions.option"
             v-if="showChart"
-          ></u-charts>
+          ></e-charts>
+        </view>
+      </view>
+    </view>
+    <view class="container p-0"
+      ><view class="row no-gutters mt-2">
+        <view class="col">
+          <custom-button
+            class="detail-btn"
+            color="white"
+            bgColor="rgb(233, 117, 40)"
+            text="查看明细"
+            :icon="require('@/static/images/clock-in/add.svg')"
+            @click.native="_openChartDetail"
+          >
+          </custom-button>
         </view>
       </view>
     </view>
@@ -47,28 +68,21 @@
 </template>
 
 <script>
-import { log, getSystemInfo, rpxToPx } from "@/utils/utils";
+import { log, getSystemInfo, rpxToPx, getRandomArr } from "@/utils/utils";
 import uniSegmentedControl from "@dcloudio/uni-ui/lib/uni-segmented-control/uni-segmented-control.vue";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
-import UCharts from "@/components/UCharts";
+import ECharts from "@/components/Echarts";
 import chartMockData from "@/utils/chart-mock.json";
-
-// 生成随机数值
-function getRandomArr(arrLen, maxValue = 100) {
-  let arr = [];
-  for(let i = 0; i < arrLen; i++) {
-    arr.push(parseInt(Math.random() * maxValue) + 1);
-  }
-  return arr
-}
+import CustomButton from "@/components/CustomButton";
 
 export default {
   components: {
     uniSegmentedControl,
     CompPlanCard,
     ClockInPopup,
-    UCharts,
+    ECharts,
+    CustomButton,
   },
   data() {
     return {
@@ -80,14 +94,11 @@ export default {
       chartWidth: 0,
       // 打卡总时长
       totalHours: 0,
+
       weekOptions: {
         categories: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-        series: [
-          {
-            name: "",
-            data: getRandomArr(7),
-          },
-        ],
+        datas: getRandomArr(7),
+        option: {},
       },
       monthOptions: {
         categories: [
@@ -122,12 +133,20 @@ export default {
           "29号",
           "30号",
         ],
-        series: [
-          {
-            name: "",
-            data: getRandomArr(30),
-          },
-        ],
+        datas: getRandomArr(30),
+        option: {
+          dataZoom: [
+            {
+              type: "slider",
+              show: true,
+              xAxisIndex: [0],
+              left: "9%",
+              bottom: -5,
+              start: 0,
+              end: 10, //初始化滚动条
+            },
+          ],
+        },
       },
       yearOptions: {
         categories: [
@@ -144,12 +163,8 @@ export default {
           "11月",
           "12月",
         ],
-        series: [
-          {
-            name: "",
-            data: getRandomArr(12),
-          },
-        ],
+        datas: getRandomArr(12),
+        option: {},
       },
       systemInfo: {},
       // cs设置了 0 40rpx, X2
@@ -221,6 +236,14 @@ export default {
         this.current = e.currentIndex;
       }
     },
+    /**
+     * 查看图表明细
+     */
+    _openChartDetail() {
+      uni.navigateTo({
+        url: "/pages/clock-in/chart-detail",
+      });
+    },
   },
 };
 </script>
@@ -232,5 +255,8 @@ export default {
   padding: 0 40rpx;
   overflow-x: hidden;
   overflow-y: scroll;
+  > .detail-btn {
+    height: 200rpx;
+  }
 }
 </style>

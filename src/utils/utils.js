@@ -93,6 +93,15 @@ async function pxToRpx(px) {
   };
 }
 
+// 生成随机数值
+function getRandomArr(arrLen, maxValue = 100) {
+  let arr = [];
+  for (let i = 0; i < arrLen; i++) {
+    arr.push(parseInt(Math.random() * maxValue) + 1);
+  }
+  return arr;
+}
+
 export {
   getUserInfo,
   log,
@@ -100,5 +109,6 @@ export {
   toast,
   getSystemInfo,
   rpxToPx,
-  pxToRpx
+  pxToRpx,
+  getRandomArr
 }
