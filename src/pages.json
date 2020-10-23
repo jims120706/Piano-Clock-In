@@ -17,6 +17,12 @@
 			"style": {
 				"navigationBarTitleText": "添加打卡"
 			}
+		},
+		{
+			"path": "pages/clock-in/chart-detail",
+			"style": {
+				"navigationBarTitleText": "统计详情"
+			}
 		}
 	],
 	"tabBar": {
