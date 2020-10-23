@@ -2,10 +2,40 @@
   <view class="clock-in">
     <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
     </comp-plan-card>
+    <view class="mt-4">
+      <uni-segmented-control
+        :current="current"
+        :values="items"
+        @clickItem="_onClickItem"
+        style-type="button"
+        active-color="rgb(233, 117, 40)"
+      ></uni-segmented-control>
+    </view>
     <view class="container p-0">
-      <view class="row no-gutters">
+      <view class="row no-gutters mt-2" v-if="current === 0">
         <view class="col">
           <u-charts
+            canvasId="week"
+            :opts="chartOptions"
+            :cWidth="chartWidth"
+            v-if="showChart"
+          ></u-charts>
+        </view>
+      </view>
+      <view class="row no-gutters mt-2" v-if="current === 1">
+        <view class="col">
+          <u-charts
+            canvasId="month"
+            :opts="chartOptions"
+            :cWidth="chartWidth"
+            v-if="showChart"
+          ></u-charts>
+        </view>
+      </view>
+      <view class="row no-gutters mt-2" v-if="current === 2">
+        <view class="col">
+          <u-charts
+            canvasId="year"
             :opts="chartOptions"
             :cWidth="chartWidth"
             v-if="showChart"
@@ -18,6 +48,7 @@
 
 <script>
 import { log, getSystemInfo, rpxToPx } from "@/utils/utils";
+import uniSegmentedControl from "@dcloudio/uni-ui/lib/uni-segmented-control/uni-segmented-control.vue";
 import CompPlanCard from "./components/PlanCard";
 import ClockInPopup from "./components/ClockInPopup";
 import UCharts from "@/components/UCharts";
@@ -25,12 +56,17 @@ import chartMockData from "@/utils/chart-mock.json";
 
 export default {
   components: {
+    uniSegmentedControl,
     CompPlanCard,
     ClockInPopup,
     UCharts,
   },
   data() {
     return {
+      // 选项卡
+      items: ["本周统计", "本月统计", "本年统计"],
+      current: 0,
+
       title: "clock-in",
       chartWidth: 0,
       // 打卡总时长
@@ -67,14 +103,8 @@ export default {
     this._getDailycheckCounts();
   },
   onLoad() {
-    rpxToPx(80).then((res) => {
-      log("padding", res);
-      this.chartWidth = res.screenWidth - res.trans;
-      log("this.chartWidth", this.chartWidth);
-      this.showChart = true;
-    });
+    this._renderChart();
   },
-  mounted() {},
   methods: {
     /**
      * 点击打卡或补卡按钮回调
@@ -113,6 +143,23 @@ export default {
           log("打卡图表数据", res.item);
         });
     },
+    /**
+     * 渲染图表
+     */
+    _renderChart() {
+      rpxToPx(80).then((res) => {
+        this.chartWidth = res.screenWidth - res.trans;
+        this.showChart = true;
+      });
+    },
+    /**
+     * 标签切换回调
+     */
+    _onClickItem(e) {
+      if (this.current !== e.currentIndex) {
+        this.current = e.currentIndex;
+      }
+    },
   },
 };
 </script>
@@ -122,6 +169,7 @@ export default {
   background: #f3f0f0;
   height: 100%;
   padding: 0 40rpx;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 </style>
