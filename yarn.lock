@@ -7161,6 +7161,11 @@ move-concurrently@^1.0.1:
     rimraf "^2.5.4"
     run-queue "^1.0.3"
 
+mpvue-echarts@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.npm.taobao.org/mpvue-echarts/download/mpvue-echarts-0.3.2.tgz#e08a9dd8233dce306e248a3470bf7f0279422ac2"
+  integrity sha1-4Iqd2CM9zjBuJIo0cL9/AnlCKsI=
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
