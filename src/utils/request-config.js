@@ -5,15 +5,15 @@
 
 
 const dev = {
-  api1: 'http://47.112.209.215:8080',
-  api2: 'http://47.112.209.215:8080',
-  api3: 'http://47.112.209.215:8080'
+  api1: 'http://shenqindaka.top:8080',
+  api2: 'http://shenqindaka.top:8080',
+  api3: 'http://shenqindaka.top:8080'
 }
 
 const prod = {
-  api1: 'http://www.dailycheck.top:8080',
-  api2: 'http://www.dailycheck.top:8080',
-  api3: 'http://www.dailycheck.top:8080'
+  api1: 'http://shenqindaka.top:8080',
+  api2: 'http://shenqindaka.top:8080',
+  api3: 'http://shenqindaka.top:8080'
 }
 
 const apiConfig = {
@@ -27,7 +27,7 @@ const apiConfig = {
 
 // token对象
 const tokenList = {
-  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjAyOTIxNjY4LCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTcwMzI4MTY2OCwiaWF0IjoxNjAyOTIxNjY4fQ.RnJfpRyrWIIho_hmQBtAh6wizQjyP7WfDhJF8FHQ1bI"
+  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjA0MzA1NDIwLCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTYwNDY2NTQyMCwiaWF0IjoxNjA0MzA1NDIwfQ.5Flhl5Bf-7KeN2i3JsqcBJ--cNV6M47e4JZ5cr2lqpo"
 }
 
 // 本地联调的baseUrl列表，一般他们不会关机，所以不用改
@@ -41,7 +41,7 @@ const localBaseUrlList = {
  * trial	体验版
  * release	正式版
  */
-const accountInfo = wx.getAccountInfoSync()
+const accountInfo = uni.getAccountInfoSync()
 export const env = accountInfo.miniProgram.envVersion
 
 if (!env) {

@@ -45,11 +45,65 @@ function getDailycheckCounts(options = {}) {
   })
 }
 
+/**
+ * 一周打卡数据统计
+ * @param {number} index
+ * @param {number} size
+ */
+function getHoursWeek(options = {}) {
+  return requestGet({
+    url: '/dailycheck/hoursWeek',
+    ...options
+  })
+}
+
+/**
+ * 一月打卡数据统计
+ * @param {number} index
+ * @param {number} size
+ */
+function getHoursMonths(options = {}) {
+  return requestGet({
+    url: '/dailycheck/hoursMonths',
+    ...options
+  })
+}
+
+/**
+ * 按时间查询的打卡数据统计
+ * @param {number} index
+ * @param {number} size
+ */
+function findCondition(options = {}) {
+  return requestPost({
+    url: '/dailycheck/findCondition',
+    ...options
+  })
+}
+
+/**
+ * 当日打卡明细数据统计
+ * @param {number} index
+ * @param {number} size
+ */
+function getTodayDetails(options = {}) {
+  return requestPost({
+    url: '/dailycheck/details',
+    ...options
+  })
+}
+
+
+
 const apis = {
   dailycheckCommit,
   dailycheckSupply,
   dailycheckHoursTotal,
-  getDailycheckCounts
+  getDailycheckCounts,
+  getHoursWeek,
+  getHoursMonths,
+  findCondition,
+  getTodayDetails,
 }
 
 export default apis
