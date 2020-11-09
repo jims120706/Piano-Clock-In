@@ -84,15 +84,15 @@ function _request(method = 'GET', options = {}) {
           if(res.statusCode === 401) {
             store.commit("setToken", "")
           }
-          uni.showToast({
-            title: '请求失败',
-            icon: 'none'
-          })
           if (typeof res.data !== 'object') {
             res.data = {}
             res.data.success = false;
             res.data.code = res.statusCode
           }
+          uni.showToast({
+            title: res.data && res.data.message || '请求失败',
+            icon: 'none'
+          })
           reject(res.data)
         }
       },

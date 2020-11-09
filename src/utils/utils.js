@@ -159,6 +159,25 @@ function getMonthDay(year, month) {
   return days
 }
 
+/**
+ * 处理数组，小于10补0, 大于10维持
+ */
+function handleDateTimeStr(str, splitChar = "-") {
+  let arr;
+  if(str.length <=0 ) {
+    return ''
+  }
+  arr = str.split(splitChar);
+  arr = arr.map(num => {
+    num = parseInt(num);
+    if(0 <= num && num < 10) {
+      num = `0${num}`
+    }
+    return `${num}`
+  })
+  return arr.join(splitChar);
+}
+
 export {
   getUserInfo,
   log,
@@ -172,5 +191,6 @@ export {
   getMondayOfWeek,
   getSundayOfWeek,
   isDateInWeek,
-  getMonthDay
+  getMonthDay,
+  handleDateTimeStr
 }

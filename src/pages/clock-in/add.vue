@@ -193,7 +193,7 @@
 </template>
 
 <script>
-import { log, toast } from "@/utils/utils";
+import { log, toast, handleDateTimeStr } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
 import textConfig from "@/utils/text-config";
 
@@ -239,7 +239,7 @@ const minutes = [
 ];
 // 上一次操作结束小时的缓存
 const lastEndHoursCache = [];
-const initDate = new Date().toLocaleDateString().replace(/\//gi, "-");
+const initDate = handleDateTimeStr(new Date().toLocaleDateString().replace(/\//gi, "-"), "-");
 
 export default {
   components: {
