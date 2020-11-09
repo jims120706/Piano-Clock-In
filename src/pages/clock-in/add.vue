@@ -13,7 +13,7 @@
           <!-- 补卡模式 -->
           <view class="weui-cell col-12">
             <view class="weui-cell__hd">
-              <label class="weui-label label">打卡日期:</label>
+              <label class="weui-label label">{{textConfig.action}}日期:</label>
             </view>
             <view class="weui-cell__bd">
               <text>{{ initDate }}</text>
@@ -28,7 +28,7 @@
         <!-- 打卡模式 -->
         <view class="weui-cell col-12" v-if="mode === 'clockIn'">
           <view class="weui-cell__hd">
-            <label class="weui-label label">打卡日期:</label>
+            <label class="weui-label label">{{textConfig.action}}日期:</label>
           </view>
           <view class="weui-cell__bd">
             <text>{{ initDate }}</text>
@@ -39,7 +39,7 @@
         <!-- 补卡模式 -->
         <view class="weui-cell col-12" v-if="mode === 'replenish'">
           <view class="weui-cell__hd">
-            <label class="weui-label label">打卡时间:</label>
+            <label class="weui-label label">{{textConfig.action}}时间:</label>
           </view>
           <view class="weui-cell__bd">
             <picker-view
@@ -165,7 +165,7 @@
       <view class="feeling row no-gutters">
         <view class="weui-cell col-12">
           <view class="weui-cell__hd">
-            <label class="weui-label label">打卡心得:</label>
+            <label class="weui-label label">{{textConfig.action}}心得:</label>
           </view>
           <view class="weui-cell__bd">
             <textarea
@@ -195,6 +195,7 @@
 <script>
 import { log, toast } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
+import textConfig from "@/utils/text-config";
 
 const todayHours = [
   "00",
@@ -259,6 +260,7 @@ export default {
   data() {
     return {
       initDate,
+      textConfig,
       // 补卡小时数组
       somedayHours: [
         "--",
@@ -463,15 +465,15 @@ export default {
         .then((res) => {
           if (res.success) {
             toast({
-              title: "打卡成功",
+              title: `${this.textConfig.action}成功`,
             });
             // uni.navigateBack()
             log("提交打卡成功", res);
             this.backToPrevPage();
           } else {
             toast({
-              title: res.msg
-            })
+              title: res.msg,
+            });
           }
         });
     },
@@ -507,8 +509,8 @@ export default {
             this.backToPrevPage();
           } else {
             toast({
-              title: res.msg
-            })
+              title: res.msg,
+            });
           }
         });
     },

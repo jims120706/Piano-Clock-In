@@ -60,7 +60,7 @@ const Categories = {
   ],
 };
 
-function _generateChartData(remoteData = [], data) {
+function _generateChartData(remoteData = [], initHours, category) {
   remoteData.forEach((item) => {
     let checkDate = item.checkDate;
     // 判断打卡日期是否在本周
@@ -73,11 +73,11 @@ function _generateChartData(remoteData = [], data) {
       );
       console.log("index", index)
       if (index !== -1) {
-        data[index] += item.hours;
+        initHours[index] += item.hours;
       }
     }
   });
-  return data;
+  return initHours;
 }
 
 /**
@@ -88,22 +88,22 @@ class ChartDataFactory {
     if (!category || !Categories[category]) {
       throw new Error("category is not exist, please check");
     }
-    let arr;
+    let initHours;
     switch (category) {
       case 'week':
-        arr = new Array(Categories.week.length).fill(0);
+        initHours = new Array(Categories.week.length).fill(0);
         break;
       case 'month':
-        arr = new Array(Categories.month.length).fill(0);
+        initHours = new Array(Categories.month.length).fill(0);
         break;
       case 'year':
-        arr = new Array(Categories.year.length).fill(0);
+        initHours = new Array(Categories.year.length).fill(0);
         break;
       default:
-        arr = new Array(Categories.week.length).fill(0);
+        initHours = new Array(Categories.week.length).fill(0);
         break;
     }
-    return _generateChartData(data, arr)
+    return _generateChartData(data, initHours, category)
   }
 }
 

@@ -9,7 +9,7 @@
         ></image>
       </view>
       <view class="my-col col-6">
-        <view class="pl-2 title">钢琴</view>
+        <view class="pl-2 title">{{textConfig.theme}}</view>
         <view class="pl-2 date pt-1">2020-10-13</view>
       </view>
       <view class="my-col col-3 justify-content-center text-center">
@@ -51,7 +51,7 @@
         <custom-button
           color="white"
           bgColor="rgb(233, 117, 40)"
-          text="打卡"
+          :text="textConfig.action"
           :icon="require('@/static/images/clock-in/add.svg')"
           @click.native="_onBtnClick('clockIn')"
         ></custom-button>
@@ -62,6 +62,7 @@
 
 <script>
 import CustomButton from "@/components/CustomButton";
+import textConfig from "@/utils/text-config";
 export default {
   props: {
     todayHours: {
@@ -89,6 +90,11 @@ export default {
       this.$emit("onBtnClick", type);
     },
   },
+  data() {
+    return {
+      textConfig
+    }
+  }
 };
 </script>
 
