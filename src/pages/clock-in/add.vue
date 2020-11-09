@@ -333,7 +333,7 @@ export default {
     // 打卡日期切换回调
     _handlePlanDateChange(event) {
       log("打卡日期切换回调", event.detail.value);
-      this.initDate = event.detail.value;
+      this.initDate = handleDateTimeStr(event.detail.value, "-");
     },
     // 打卡开始时间变化
     _handleStartTimePickerChange(event) {

@@ -95,6 +95,7 @@ export default {
     return {
       // 选项卡
       items: ["本周统计", "本月统计", "本年统计"],
+      catrgories: ['week', 'month', 'year'],
       current: 0,
 
       title: "clock-in",
@@ -104,12 +105,12 @@ export default {
 
       weekOptions: {
         categories: Categories.week,
-        datas: getRandomArr(7),
+        datas: [],
         option: {},
       },
       monthOptions: {
         categories: Categories.month,
-        datas: getRandomArr(30),
+        datas: [],
         option: {
           grid: {
             left: "10%",
@@ -132,7 +133,7 @@ export default {
       },
       yearOptions: {
         categories: Categories.year,
-        datas: getRandomArr(12),
+        datas: [],
         option: {},
       },
       systemInfo: {},
@@ -145,11 +146,12 @@ export default {
     // 每次进入该页面都要刷新打卡总时长
     this._refreshClockInTotalHours();
     // 获取图表数据
-    this._getDailycheckCounts();
+    // this._getDailycheckCounts();
     // 本周打卡时长
     this._getHoursWeek();
     // 本月打卡时长
     this._getHoursMonths();
+    this._getHoursYear();
   },
   onLoad() {
     this._renderChart();
@@ -213,31 +215,46 @@ export default {
      * 查看图表明细
      */
     _openChartDetail() {
+      const category = this.catrgories[this.current];
       uni.navigateTo({
-        url: "/pages/clock-in/chart-detail",
+        url: `/pages/clock-in/chart-detail?category=${category}`,
       });
     },
     /**
      * 获取本周打卡数据
      */
     _getHoursWeek() {
+      this.showChart = false;
       this.$api.clockInApi.getHoursWeek().then((res) => {
         log("本周打卡时长", res);
         /**
          * checkDate: 打卡日期
          */
         const data = res.item || [];
-        const arr = ChartDataFactory.generateChartData(data, 'week')
+        const arr = ChartDataFactory.generateChartData(data, "week");
         console.log("本周打卡数组", arr);
+        this.weekOptions.datas = arr;
+        this.showChart = true;
       });
     },
     /**
      * 获取本月打卡数据
      */
     _getHoursMonths() {
+      this.showChart = false;
       this.$api.clockInApi.getHoursMonths().then((res) => {
+        const data = res.item || [];
+        const arr = ChartDataFactory.generateChartData(data, "month");
         log("本月打卡时长", res);
+        this.monthOptions.datas = arr;
+        this.showChart = true;
       });
+    },
+    /**
+     * 获取本年打卡数据
+     */
+    _getHoursYear() {
+      this.yearOptions.datas = getRandomArr(12)
     },
   },
 };

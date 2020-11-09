@@ -60,7 +60,8 @@ const Categories = {
   ],
 };
 
-function _generateChartData(remoteData = [], initHours, category) {
+// 本周数据生成器
+function _generateWeekData(remoteData = [], initHours) {
   remoteData.forEach((item) => {
     let checkDate = item.checkDate;
     // 判断打卡日期是否在本周
@@ -78,6 +79,29 @@ function _generateChartData(remoteData = [], initHours, category) {
     }
   });
   return initHours;
+}
+
+// 本月数据生成器
+function _generateMonthData(remoteData = [], initHours) {
+  remoteData.forEach((item) => {
+    let checkDate = item.checkDate;
+    // 获取checkDate的日期和month数组中的日期作比较获取下标
+    let date = new Date(checkDate.replace(/-/ig, "/")).getDate();
+    let dateIndex = Categories.month.findIndex(d => parseInt(d) === date);
+    if (dateIndex !== -1) {
+      initHours[dateIndex] += item.hours;
+    }
+  });
+  return initHours;
+}
+
+// 本年数据生成器
+function _generateYearData(remoteData = [], initHours) { }
+
+const _generateDataFactorey = {
+  _generateWeekData,
+  _generateMonthData,
+  _generateYearData
 }
 
 /**
@@ -103,7 +127,8 @@ class ChartDataFactory {
         initHours = new Array(Categories.week.length).fill(0);
         break;
     }
-    return _generateChartData(data, initHours, category)
+    const CategoryUpper = category[0].toUpperCase() + category.slice(1);
+    return _generateDataFactorey[`_generate${CategoryUpper}Data`](data, initHours)
   }
 }
 

@@ -75,7 +75,6 @@ function _request(method = 'GET', options = {}) {
         }
       },
       success: (res) => {
-        console.log("请求情况", res, res.data)
         if (parseInt(res.statusCode / 100) !== 4 && parseInt(res.statusCode / 100) !== 5) {
           res.data.success = true;
           res.data.code = res.statusCode
