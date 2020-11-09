@@ -99,6 +99,12 @@ export default {
           {
             data: this.datas,
             type: "bar",
+            label: {
+              normal: {
+                show: true,
+                position: this.canvasId.includes("detail") ? "right" : "top",
+              },
+            },
           },
         ],
       };
