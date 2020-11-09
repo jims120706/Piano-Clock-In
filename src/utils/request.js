@@ -7,6 +7,7 @@ import config, {
   mockToken,
   localBaseUrl
 } from './request-config'
+import store from '@/store'
 const {
   api1,
   api2,
@@ -30,8 +31,8 @@ function _request(method = 'GET', options = {}) {
   let useLoading = ('' + options.useLoading === 'false' || '' + options.useLoading === 'true') ? options.useLoading : true;
   const {
     responseType = 'text',
-      isToken = true, // 是否需要token请求
-      loadingTitle = '加载中'
+    isToken = true, // 是否需要token请求
+    loadingTitle = '加载中'
   } = options;
   /**
    * 如果参数必须要放在url中，对url进行处理
@@ -74,8 +75,26 @@ function _request(method = 'GET', options = {}) {
         }
       },
       success: (res) => {
-        res.data.success = parseInt(res.data.code / 100) !== 4 && parseInt(res.data.code / 100) !== 5;
-        resolve(res.data)
+        console.log("请求情况", res, res.data)
+        if (parseInt(res.statusCode / 100) !== 4 && parseInt(res.statusCode / 100) !== 5) {
+          res.data.success = true;
+          res.data.code = res.statusCode
+          resolve(res.data)
+        } else {
+          if(res.statusCode === 401) {
+            store.commit("setToken", "")
+          }
+          uni.showToast({
+            title: '请求失败',
+            icon: 'none'
+          })
+          if (typeof res.data !== 'object') {
+            res.data = {}
+            res.data.success = false;
+            res.data.code = res.statusCode
+          }
+          reject(res.data)
+        }
       },
       fail(err) {
         uni.showToast({

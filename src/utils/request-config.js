@@ -27,7 +27,7 @@ const apiConfig = {
 
 // token对象
 const tokenList = {
-  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJZYWVoZXJBUEkiLCJzdWIiOiIxIiwibmJmIjoxNjA0MzA1NDIwLCJyb2xlcyI6W10sImlzcyI6IllhZWhlckFQSSIsImV4cCI6MTYwNDY2NTQyMCwiaWF0IjoxNjA0MzA1NDIwfQ.5Flhl5Bf-7KeN2i3JsqcBJ--cNV6M47e4JZ5cr2lqpo"
+  'test': "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYWthIiwic3ViIjoiMSIsIm5iZiI6MTYwNDg5MjM1OCwicm9sZXMiOltdLCJpc3MiOiJkYWthIiwiZXhwIjoxNjA1MjUyMzU4LCJpYXQiOjE2MDQ4OTIzNTh9.2wf9c4JAeQWOZ0lGd6k_0To-Vib9Arjwe7Lj3xq_J7Y"
 }
 
 // 本地联调的baseUrl列表，一般他们不会关机，所以不用改
@@ -49,7 +49,7 @@ if (!env) {
 }
 
 export default apiConfig[env]
-export const useMockToken = true // 是否使用mockToken
+export const useMockToken = false // 是否使用mockToken
 export const useLocalBaseUrl = false // 是否使用本地url作为请求的baseUrl，本地联调开发时用
 export const mockToken = tokenList['test']// 写死的mockToken
 export const localBaseUrl = localBaseUrlList['kai'] // 本地联调时的baseUrl

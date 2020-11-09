@@ -16,6 +16,7 @@
 
 <script>
 import { getUserInfo, log } from "@/utils/utils";
+import {mapMutations} from '@/store';
 export default {
   data() {
     return {
@@ -49,6 +50,7 @@ export default {
     });
   },
   methods: {
+    ...mapMutations(['setToken']),
     // 获取用户信息
     getUserInfo(event) {
       log("用户信息", event.detail);
@@ -72,6 +74,7 @@ export default {
         })
         .then((res) => {
           log("登录成功", res);
+          this.setToken(res.access_token);
         });
       //   },
       // });
