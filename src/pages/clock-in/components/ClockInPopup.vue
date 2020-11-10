@@ -253,7 +253,7 @@ export default {
   computed: {},
   data() {
     return {
-      initDate: new Date().toLocaleDateString().replace(/\//gi, "-"),
+      initDate: getDateString(new Date()),
       // 补卡小时数组
       somedayHours: [
         "--",

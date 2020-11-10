@@ -1,3 +1,11 @@
+import {
+  weekEngMap,
+  weekChiMap,
+  monthEngMap,
+  monthChiMap,
+  monthNumMap
+} from './maps'
+
 /**
  * 获取用户信息
  */
@@ -106,8 +114,8 @@ function getRandomArr(arrLen, maxValue = 100) {
  * 获取当前日期是周几
  */
 function getWeekDay(dateStr) {
-  const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"]
-  let dateObj = new Date(dateStr.replace(/-/ig, "/"));
+  const week = weekChiMap;
+  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
   return week[dateObj.getDay()]
 }
 
@@ -115,12 +123,12 @@ function getWeekDay(dateStr) {
  * 获取本周周一
  */
 function getMondayOfWeek(dateStr, resultType = 'obj') {
-  let dateObj = new Date(dateStr.replace(/-/ig, "/"));
+  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
   let day = dateObj.getDay() || 7;
   if (resultType === 'obj') {
     return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 - day);
-  }else {
-    return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 - day).toLocaleDateString()
+  } else {
+    return getDateString(new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 - day))
   }
 };
 
@@ -128,12 +136,12 @@ function getMondayOfWeek(dateStr, resultType = 'obj') {
  * 获取本周周日
  */
 function getSundayOfWeek(dateStr, resultType = 'obj') {
-  let dateObj = new Date(dateStr.replace(/-/ig, "/"));
+  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
   let day = dateObj.getDay() || 7;
   if (resultType === 'obj') {
     return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 + day);
-  }else {
-    return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 + day).toLocaleDateString()
+  } else {
+    return getDateString(new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 + day))
   }
 };
 
@@ -147,7 +155,7 @@ function isDateInWeek(dateStr) {
   let sunday = getSundayOfWeek(dateStr, 'str');
   sunday += " 23:59:59"
   sunday = new Date(sunday);
-  let dateObj = new Date(dateStr.replace(/-/ig, "/"));
+  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
   return dateObj.getTime() >= monday.getTime() && dateObj.getTime() <= sunday.getTime()
 }
 
@@ -164,18 +172,30 @@ function getMonthDay(year, month) {
  */
 function handleDateTimeStr(str, splitChar = "-") {
   let arr;
-  if(str.length <=0 ) {
+  if (str.length <= 0) {
     return ''
   }
   arr = str.split(splitChar);
   arr = arr.map(num => {
     num = parseInt(num);
-    if(0 <= num && num < 10) {
+    if (0 <= num && num < 10) {
       num = `0${num}`
     }
     return `${num}`
   })
   return arr.join(splitChar);
+}
+
+function getDateString(dateObj) {
+  // "Tue Nov 10 2020 14:30:02 GMT+0800 (中国标准时间)"
+  let str = dateObj.toString();
+  let s_arr = str.split(" ");
+  let year = s_arr[3]
+  let monthIndex =  monthEngMap.findIndex(month => s_arr[1] === month)
+  let month = monthNumMap[monthIndex];
+  let date = s_arr[2];
+  console.log("month", month)
+  return `${year}-${month}-${date}`
 }
 
 export {
@@ -192,5 +212,6 @@ export {
   getSundayOfWeek,
   isDateInWeek,
   getMonthDay,
-  handleDateTimeStr
+  handleDateTimeStr,
+  getDateString
 }

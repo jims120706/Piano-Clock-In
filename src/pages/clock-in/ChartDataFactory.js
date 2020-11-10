@@ -86,7 +86,7 @@ function _generateMonthData(remoteData = [], initHours) {
   remoteData.forEach((item) => {
     let checkDate = item.checkDate;
     // 获取checkDate的日期和month数组中的日期作比较获取下标
-    let date = new Date(checkDate.replace(/-/ig, "/")).getDate();
+    let date = new Date(checkDate.replace(/\-/ig, "/")).getDate();
     let dateIndex = Categories.month.findIndex(d => parseInt(d) === date);
     if (dateIndex !== -1) {
       initHours[dateIndex] += item.hours;
