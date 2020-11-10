@@ -8,4 +8,4 @@ const pro = {
   action: '打卡'
 }
 
-export default dev
+export default pro
