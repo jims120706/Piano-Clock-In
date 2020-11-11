@@ -59,9 +59,7 @@
 </template>
 
 <script>
-import {
-  getDateString
-} from "@/utils/utils";
+import { getDateString } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
 import textConfig from "@/utils/text-config";
 export default {
@@ -94,9 +92,9 @@ export default {
   data() {
     return {
       textConfig,
-      today: getDateString(new Date())
-    }
-  }
+      today: getDateString(new Date()),
+    };
+  },
 };
 </script>
 
@@ -104,7 +102,8 @@ export default {
 .plan-card {
   border-radius: 10px;
   background: white;
-  color: #2A9F93;
+  color: #2a9f93;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
   > .row1 {
     height: 200rpx;
     .icon {
@@ -112,7 +111,7 @@ export default {
       height: 100rpx;
       // background: orange;
       border-radius: 50%;
-      border: 1px solid #2A9F93;
+      border: 1px solid #2a9f93;
       padding: 10rpx;
     }
     .title {
