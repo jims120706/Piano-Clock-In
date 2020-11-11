@@ -3,6 +3,7 @@
     <view class="container p-0">
       <view class="date row no-gutters">
         <picker
+          class="col-12 mt-4"
           mode="date"
           :value="initDate"
           start="2000-01-01"
@@ -11,172 +12,165 @@
           v-if="mode === 'replenish'"
         >
           <!-- 补卡模式 -->
-          <view class="weui-cell col-12">
-            <view class="weui-cell__hd">
-              <label class="weui-label label">{{textConfig.action}}日期:</label>
-            </view>
-            <view class="weui-cell__bd">
-              <text>{{ initDate }}</text>
-              <image
-                src="@/static/images/arrow-down.svg"
-                :lazy-load="true"
-                class="icon"
-              ></image>
-            </view>
-          </view>
+          <uni-card
+            class="col-12 mt-4"
+            title="日期"
+            is-full="true"
+            is-shadow="true"
+          >
+            <text>{{ initDate }}</text>
+            <image
+              src="@/static/images/arrow-down.svg"
+              :lazy-load="true"
+              class="icon"
+            ></image>
+          </uni-card>
         </picker>
         <!-- 打卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'clockIn'">
-          <view class="weui-cell__hd">
-            <label class="weui-label label">{{textConfig.action}}日期:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <text>{{ initDate }}</text>
-          </view>
-        </view>
+        <uni-card
+          is-full="true"
+          is-shadow="true"
+          class="col-12 mt-4"
+          :title="textConfig.action + '日期'"
+          v-if="mode === 'clockIn'"
+        >
+          <text>{{ initDate }}</text>
+        </uni-card>
       </view>
       <view class="time row no-gutters">
         <!-- 补卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'replenish'">
-          <view class="weui-cell__hd">
-            <label class="weui-label label">{{textConfig.action}}时间:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <picker-view
-              :value="supplyTimePickerList"
-              class="time-picker"
-              @change="_handleSupplyTimeChange"
-            >
-              <picker-view-column>
-                <view
-                  class="column"
-                  v-for="(item, index) in somedayHours"
-                  :key="index"
-                  >{{ item }} 小时</view
-                >
-              </picker-view-column>
-              <picker-view-column class="column">
-                <view
-                  class="column"
-                  v-for="(item, index) in minutes"
-                  :key="index"
-                  >{{ item }} 分钟</view
-                >
-              </picker-view-column>
-            </picker-view>
-          </view>
-        </view>
+        <uni-card
+          is-full="true"
+          is-shadow="true"
+          class="col-12 mt-4"
+          :title="textConfig.action + '时间'"
+          v-if="mode === 'replenish'"
+        >
+          <picker-view
+            :value="supplyTimePickerList"
+            class="time-picker"
+            @change="_handleSupplyTimeChange"
+          >
+            <picker-view-column>
+              <view
+                class="column"
+                v-for="(item, index) in somedayHours"
+                :key="index"
+                >{{ item }} 小时</view
+              >
+            </picker-view-column>
+            <picker-view-column class="column">
+              <view class="column" v-for="(item, index) in minutes" :key="index"
+                >{{ item }} 分钟</view
+              >
+            </picker-view-column>
+          </picker-view>
+        </uni-card>
 
         <!-- 打卡模式 -->
-        <view class="weui-cell col-12" v-if="mode === 'clockIn'">
-          <view class="weui-cell__hd">
-            <label class="weui-label label">开始时间:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <picker-view
-              class="time-picker"
-              @change="_handleStartTimePickerChange"
-              :value="startTimePickerList"
-            >
-              <picker-view-column>
-                <view
-                  class="column"
-                  v-for="(item, index) in todayHours"
-                  :key="index"
-                  >{{ item }} 时</view
-                >
-              </picker-view-column>
-              <picker-view-column class="column">
-                <view
-                  class="column"
-                  v-for="(item, index) in minutes"
-                  :key="index"
-                  >{{ item }} 分</view
-                >
-              </picker-view-column>
-            </picker-view>
-          </view>
-        </view>
+        <uni-card
+          class="col-12 mt-4"
+          title="开始时间"
+          v-if="mode === 'clockIn'"
+          is-full="true"
+          is-shadow="true"
+        >
+          <picker-view
+            class="time-picker"
+            @change="_handleStartTimePickerChange"
+            :value="startTimePickerList"
+          >
+            <picker-view-column>
+              <view
+                class="column"
+                v-for="(item, index) in todayHours"
+                :key="index"
+                >{{ item }} 时</view
+              >
+            </picker-view-column>
+            <picker-view-column class="column">
+              <view class="column" v-for="(item, index) in minutes" :key="index"
+                >{{ item }} 分</view
+              >
+            </picker-view-column>
+          </picker-view>
+        </uni-card>
 
         <!-- 结束时间占位, 防止重新渲染结束时间组件时页面的跳动 -->
-        <view
-          class="weui-cell col-12 today-end-time"
+        <uni-card
+          is-full="true"
+          is-shadow="true"
+          class="col-12 today-end-time mt-4"
+          title="结束时间"
           v-if="mode === 'clockIn' && reRenderEndTime"
         >
-          <view class="weui-cell__hd">
-            <label class="weui-label label">结束时间:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <picker-view class="time-picker" :value="endTimePickerList">
-              <picker-view-column>
-                <view
-                  class="column"
-                  v-for="(item, index) in todayEndHours"
-                  :key="index"
-                  >{{ item }} 时</view
-                >
-              </picker-view-column>
-              <picker-view-column class="column">
-                <view
-                  class="column"
-                  v-for="(item, index) in todayEndMins"
-                  :key="index"
-                  >{{ item }} 分</view
-                >
-              </picker-view-column>
-            </picker-view>
-          </view>
-        </view>
+          <picker-view class="time-picker" :value="endTimePickerList">
+            <picker-view-column>
+              <view
+                class="column"
+                v-for="(item, index) in todayEndHours"
+                :key="index"
+                >{{ item }} 时</view
+              >
+            </picker-view-column>
+            <picker-view-column class="column">
+              <view
+                class="column"
+                v-for="(item, index) in todayEndMins"
+                :key="index"
+                >{{ item }} 分</view
+              >
+            </picker-view-column>
+          </picker-view>
+        </uni-card>
 
-        <view
-          class="weui-cell col-12 today-end-time"
+        <uni-card
+          is-full="true"
+          is-shadow="true"
+          class="col-12 today-end-time mt-4"
+          title="结束时间"
           v-if="mode === 'clockIn' && !reRenderEndTime"
-          style="position: relative"
         >
-          <view class="weui-cell__hd">
-            <label class="weui-label label">结束时间:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <picker-view
-              class="time-picker"
-              @change="_handleEndPickerChange"
-              :value="endTimePickerList"
-            >
-              <picker-view-column>
-                <view
-                  class="column"
-                  v-for="(item, index) in todayEndHours"
-                  :key="index"
-                  >{{ item }} 时</view
-                >
-              </picker-view-column>
-              <picker-view-column class="column">
-                <view
-                  class="column"
-                  v-for="(item, index) in todayEndMins"
-                  :key="index"
-                  >{{ item }} 分</view
-                >
-              </picker-view-column>
-            </picker-view>
-          </view>
-        </view>
+          <picker-view
+            class="time-picker"
+            @change="_handleEndPickerChange"
+            :value="endTimePickerList"
+          >
+            <picker-view-column>
+              <view
+                class="column"
+                v-for="(item, index) in todayEndHours"
+                :key="index"
+                >{{ item }} 时</view
+              >
+            </picker-view-column>
+            <picker-view-column class="column">
+              <view
+                class="column"
+                v-for="(item, index) in todayEndMins"
+                :key="index"
+                >{{ item }} 分</view
+              >
+            </picker-view-column>
+          </picker-view>
+        </uni-card>
       </view>
       <view class="feeling row no-gutters">
-        <view class="weui-cell col-12">
-          <view class="weui-cell__hd">
-            <label class="weui-label label">{{textConfig.action}}心得:</label>
-          </view>
-          <view class="weui-cell__bd">
-            <textarea
-              class="weui-textarea textarea"
-              placeholder="欢迎分享你的心得"
-              rows="2"
-            ></textarea>
-          </view>
-        </view>
+        <uni-card
+          is-full="true"
+          is-shadow="true"
+          class="col-12 mt-4"
+          :title="textConfig.action + '心得'"
+          v-if="mode === 'clockIn'"
+        >
+          <textarea
+            class="textarea"
+            placeholder="欢迎分享你的心得"
+            :auto-height="true"
+          ></textarea>
+        </uni-card>
       </view>
-      <view class="row no-gutters mt-4">
+      <view class="row no-gutters mt-4 mb-4">
         <custom-button
           class="col-12"
           color="white"
@@ -193,6 +187,7 @@
 </template>
 
 <script>
+import uniCard from "@dcloudio/uni-ui/lib/uni-card/uni-card.vue";
 import { log, toast, handleDateTimeStr, getDateString } from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
 import textConfig from "@/utils/text-config";
@@ -244,6 +239,7 @@ const initDate = handleDateTimeStr(getDateString(new Date()));
 export default {
   components: {
     CustomButton,
+    uniCard,
   },
   onLoad(options = {}) {
     /**
@@ -559,8 +555,10 @@ export default {
   }
   .feeling {
     .textarea {
-      height: 120rpx;
-      border: 1px solid #323233;
+      // height: 120rpx;
+      width: 100%;
+      min-height: 120rpx;
+      // border: 1px solid #323233;
     }
   }
 }
