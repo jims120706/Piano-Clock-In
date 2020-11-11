@@ -8,6 +8,7 @@
           title="日期"
           is-full="true"
           is-shadow="true"
+          v-if="mode === 'replenish'"
         >
           <picker
             class="col-12"
@@ -16,7 +17,6 @@
             start="2000-01-01"
             :end="initDate"
             @change="_handlePlanDateChange"
-            v-if="mode === 'replenish'"
           >
             <text>{{ initDate }}</text>
             <image
