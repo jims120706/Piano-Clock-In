@@ -95,7 +95,7 @@ export default {
     return {
       // 选项卡
       items: ["本周统计", "本月统计", "本年统计"],
-      catrgories: ['week', 'month', 'year'],
+      catrgories: ["week", "month", "year"],
       current: 0,
 
       title: "clock-in",
@@ -173,8 +173,10 @@ export default {
      */
     _refreshClockInTotalHours() {
       this.$api.clockInApi.dailycheckHoursTotal().then((res) => {
-        log("打卡总时长", res.item.toFixed(1));
-        this.totalHours = parseFloat(res.item.toFixed(1));
+        if (res.item) {
+          log("打卡总时长", res.item.toFixed(1));
+          this.totalHours = parseFloat(res.item.toFixed(1));
+        }
       });
     },
     /**
@@ -254,7 +256,7 @@ export default {
      * 获取本年打卡数据
      */
     _getHoursYear() {
-      this.yearOptions.datas = getRandomArr(12)
+      this.yearOptions.datas = getRandomArr(12);
     },
   },
 };

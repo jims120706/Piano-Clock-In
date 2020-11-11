@@ -9,8 +9,8 @@
         ></image>
       </view>
       <view class="my-col col-6">
-        <view class="pl-2 title">{{textConfig.theme}}</view>
-        <view class="pl-2 date pt-1">2020-10-13</view>
+        <view class="pl-2 title">{{ textConfig.theme }}</view>
+        <view class="pl-2 date pt-1">{{ today }}</view>
       </view>
       <view class="my-col col-3 justify-content-center text-center">
         <view class="time">{{ totalHours }}h</view>
@@ -61,6 +61,9 @@
 </template>
 
 <script>
+import {
+  getDateString
+} from "@/utils/utils";
 import CustomButton from "@/components/CustomButton";
 import textConfig from "@/utils/text-config";
 export default {
@@ -92,7 +95,8 @@ export default {
   },
   data() {
     return {
-      textConfig
+      textConfig,
+      today: getDateString(new Date())
     }
   }
 };

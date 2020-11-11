@@ -151,11 +151,16 @@ function getSundayOfWeek(dateStr, resultType = 'obj') {
 function isDateInWeek(dateStr) {
   let monday = getMondayOfWeek(dateStr, 'str');
   monday += " 00:00:00";
+  monday = monday.replace(/\-/ig, "/")
   monday = new Date(monday);
   let sunday = getSundayOfWeek(dateStr, 'str');
   sunday += " 23:59:59"
+  sunday = sunday.replace(/\-/ig, "/")
   sunday = new Date(sunday);
   let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
+  console.log("dateObj.getTime()", dateObj.getTime())
+  console.log("monday.getTime()", monday.getTime())
+  console.log("sunday.getTime()", sunday.getTime())
   return dateObj.getTime() >= monday.getTime() && dateObj.getTime() <= sunday.getTime()
 }
 
@@ -194,7 +199,6 @@ function getDateString(dateObj) {
   let monthIndex =  monthEngMap.findIndex(month => s_arr[1] === month)
   let month = monthNumMap[monthIndex];
   let date = s_arr[2];
-  console.log("month", month)
   return `${year}-${month}-${date}`
 }
 
