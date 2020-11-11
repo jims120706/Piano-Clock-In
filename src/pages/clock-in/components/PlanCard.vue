@@ -3,7 +3,7 @@
     <view class="row row1 no-gutters align-items-center">
       <view class="my-col col-3 justify-content-center text-center">
         <image
-          src="@/static/images/clock-in/piano.svg"
+          src="@/static/images/clock-in/piano.png"
           :lazy-load="true"
           class="icon"
         ></image>
@@ -104,13 +104,15 @@ export default {
 .plan-card {
   border-radius: 10px;
   background: white;
+  color: #2A9F93;
   > .row1 {
     height: 200rpx;
     .icon {
       width: 100rpx;
       height: 100rpx;
-      background: orange;
+      // background: orange;
       border-radius: 50%;
+      border: 1px solid #2A9F93;
       padding: 10rpx;
     }
     .title {
@@ -122,17 +124,14 @@ export default {
     }
     .time {
       font-size: 48rpx;
-      color: rgb(233, 117, 40);
     }
     .unit {
       font-size: 32rpx;
-      color: rgb(233, 117, 40);
     }
   }
   > .row2 {
     .unit {
       font-size: 48rpx;
-      color: rgb(233, 117, 40);
     }
     .text {
       font-size: 32rpx;
