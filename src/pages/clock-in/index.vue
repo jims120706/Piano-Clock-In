@@ -8,7 +8,7 @@
         :values="items"
         @clickItem="_onClickItem"
         style-type="button"
-        active-color="rgb(233, 117, 40)"
+        active-color="#2A9F93"
       ></uni-segmented-control>
     </view>
     <view class="container p-0">
@@ -50,12 +50,11 @@
       </view>
     </view>
     <view class="container p-0"
-      ><view class="row no-gutters mt-2">
+      ><view class="row no-gutters mt-4 mb-4">
         <view class="col">
           <custom-button
             class="detail-btn"
             color="white"
-            bgColor="rgb(233, 117, 40)"
             text="查看明细"
             :icon="require('@/static/images/clock-in/add.svg')"
             @click.native="_openChartDetail"
@@ -264,7 +263,7 @@ export default {
 
 <style lang="scss" scoped>
 .clock-in {
-  background: #f3f0f0;
+  background: #f7f7f7;
   height: 100%;
   padding: 0 40rpx;
   overflow-x: hidden;

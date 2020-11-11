@@ -61,6 +61,7 @@ export default {
       });
       canvas.setChart(chart);
       let option = {
+        color: '#2A9F93',
         grid: {
           left: "10%",
           right: "10%",

@@ -41,7 +41,6 @@
       <view class="col-5 align-items-center">
         <custom-button
           color="white"
-          bgColor="rgb(233, 117, 40)"
           text="补卡"
           :icon="require('@/static/images/clock-in/replenish.svg')"
           @click.native="_onBtnClick('replenish')"
@@ -50,7 +49,6 @@
       <view class="col-5 ml-4 align-items-center">
         <custom-button
           color="white"
-          bgColor="rgb(233, 117, 40)"
           :text="textConfig.action"
           :icon="require('@/static/images/clock-in/add.svg')"
           @click.native="_onBtnClick('clockIn')"

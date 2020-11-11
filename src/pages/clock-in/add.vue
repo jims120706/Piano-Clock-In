@@ -174,7 +174,6 @@
         <custom-button
           class="col-12"
           color="white"
-          bgColor="rgb(233, 117, 40)"
           text="添加"
           textspan="3"
           btnPadding="30"

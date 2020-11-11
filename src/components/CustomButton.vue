@@ -21,7 +21,7 @@ export default {
     },
     bgColor: {
       type: String,
-      default: "green",
+      default: "#2A9F93",
     },
     color: {
       type: String,
@@ -29,16 +29,16 @@ export default {
     },
     textspan: {
       type: String,
-      default: '1'
+      default: "1",
     },
     btnPadding: {
       type: String,
-      default: '20'
-    }
+      default: "20",
+    },
   },
   computed: {
     textSpanClass() {
-      return `pl-${this.textspan}`
+      return `pl-${this.textspan}`;
     },
     btnStyle() {
       return `color: ${this.color};background-color: ${this.bgColor};padding: ${this.btnPadding}rpx 0;`;
@@ -52,6 +52,7 @@ export default {
   width: 100%;
   border-radius: 5px;
   display: flex;
+  box-shadow: 0px 6px 12px 6px rgba(87, 86, 96, 0.05);
   > .icon {
     width: 50rpx;
     height: 50rpx;
