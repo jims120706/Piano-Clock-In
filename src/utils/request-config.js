@@ -5,15 +5,15 @@
 
 
 const dev = {
-  api1: 'http://shenqindaka.top:8080',
-  api2: 'http://shenqindaka.top:8080',
-  api3: 'http://shenqindaka.top:8080'
+  api1: 'https://shenqindaka.top',
+  api2: 'https://shenqindaka.top',
+  api3: 'https://shenqindaka.top'
 }
 
 const prod = {
-  api1: 'http://shenqindaka.top:8080',
-  api2: 'http://shenqindaka.top:8080',
-  api3: 'http://shenqindaka.top:8080'
+  api1: 'https://shenqindaka.top',
+  api2: 'https://shenqindaka.top',
+  api3: 'https://shenqindaka.top'
 }
 
 const apiConfig = {
