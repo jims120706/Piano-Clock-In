@@ -2,21 +2,21 @@
   <view class="clock-in-add">
     <view class="container p-0">
       <view class="date row no-gutters">
-        <picker
+        <!-- 补卡模式 -->
+        <uni-card
           class="col-12 mt-4"
-          mode="date"
-          :value="initDate"
-          start="2000-01-01"
-          :end="initDate"
-          @change="_handlePlanDateChange"
-          v-if="mode === 'replenish'"
+          title="日期"
+          is-full="true"
+          is-shadow="true"
         >
-          <!-- 补卡模式 -->
-          <uni-card
-            class="col-12 mt-4"
-            title="日期"
-            is-full="true"
-            is-shadow="true"
+          <picker
+            class="col-12"
+            mode="date"
+            :value="initDate"
+            start="2000-01-01"
+            :end="initDate"
+            @change="_handlePlanDateChange"
+            v-if="mode === 'replenish'"
           >
             <text>{{ initDate }}</text>
             <image
@@ -24,8 +24,8 @@
               :lazy-load="true"
               class="icon"
             ></image>
-          </uni-card>
-        </picker>
+          </picker>
+        </uni-card>
         <!-- 打卡模式 -->
         <uni-card
           is-full="true"
