@@ -49,8 +49,8 @@
         </view>
       </view>
     </view>
-    <view class="container p-0"
-      ><view class="row no-gutters mt-4 mb-4">
+    <view class="container p-0">
+      <view class="row no-gutters mt-4 mb-4">
         <view class="col">
           <custom-button
             class="detail-btn"
@@ -68,12 +68,11 @@
       ref="authDialog"
       :showHead="false"
       :maskCloseable="false"
-      v-if="!token"
+      :autoInitAnimation="false"
     >
       <button
         open-type="getUserInfo"
         @getuserinfo="_onGetUserInfo"
-        v-if="!hasUserInfo"
       >
         {{ username }}
       </button>
@@ -109,7 +108,7 @@ export default {
     PopupContainer,
   },
   computed: {
-    ...mapGetters(["token"]),
+    ...mapGetters(["token"])
   },
   watch: {
     token(val) {
@@ -182,7 +181,9 @@ export default {
   },
   onShow() {
     if (!this.token) {
-      this.$refs.authDialog.open();
+      this._WxLogin().then(() => {
+        this.$refs.authDialog.open();
+      });
     } else {
       // 每次进入该页面都要刷新打卡总时长
       this._refreshClockInTotalHours();
@@ -201,21 +202,27 @@ export default {
   methods: {
     ...mapMutations(["setToken", "setUserInfo"]),
     _WxLogin() {
-      uni.login({
-        scopes: "auth_user",
-        success: (res) => {
-          log("登录成功", res);
-          this.$Api.commonApi
-            .getSessionKey({
-              data: {
-                code: res.code,
-              },
-            })
-            .then((res) => {
-              this.openid = res.item.openid;
-              log("请求成功", res);
-            });
-        },
+      return new Promise((resolve, reject) => {
+        uni.login({
+          scopes: "auth_user",
+          success: (res) => {
+            log("登录成功", res);
+            this.$Api.commonApi
+              .getSessionKey({
+                data: {
+                  code: res.code,
+                },
+              })
+              .then((res) => {
+                this.openid = res.item.openid;
+                log("请求成功", res);
+                resolve(res);
+              });
+          },
+          fail: (err) => {
+            reject(err)
+          }
+        });
       });
     },
     // 获取用户信息

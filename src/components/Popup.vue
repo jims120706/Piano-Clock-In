@@ -1,5 +1,5 @@
 <template>
-  <view class="popup-comp" v-show="visible" :animation="animationData">
+  <view class="popup-comp" v-if="visible" :animation="animationData">
     <view class="bg" @click.stop="maskClose" :style="bgStyle"></view>
     <view class="_container" :style="ctnStyle">
       <view class="_head" v-if="showHead">
@@ -55,7 +55,11 @@ export default {
     maskCloseable: {
       type: Boolean,
       default: true,
-    }
+    },
+    autoInitAnimation: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     ctnStyle() {
@@ -74,13 +78,16 @@ export default {
     };
   },
   mounted() {
-    AnimationManager.startAnimation({
-      opacity: [0],
-    }).then((animationData) => {
-      this.animationData = animationData;
-    });
+    this.init();
   },
   methods: {
+    init() {
+      AnimationManager.startAnimation({
+        opacity: [0],
+      }).then((animationData) => {
+        this.animationData = animationData;
+      });
+    },
     open() {
       this.visible = true;
       setTimeout(() => {
@@ -102,8 +109,8 @@ export default {
       });
     },
     maskClose() {
-      if(!this.maskCloseable) return;
-      this.close()
+      if (!this.maskCloseable) return;
+      this.close();
     },
     _handleClick() {
       this.$emit("onBeforeClose");
