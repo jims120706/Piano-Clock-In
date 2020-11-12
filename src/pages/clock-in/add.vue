@@ -155,7 +155,7 @@
           </picker-view>
         </uni-card>
       </view>
-      <view class="feeling row no-gutters">
+      <!-- <view class="feeling row no-gutters">
         <uni-card
           is-full="true"
           is-shadow="true"
@@ -169,7 +169,7 @@
             :auto-height="true"
           ></textarea>
         </uni-card>
-      </view>
+      </view> -->
       <view class="row no-gutters mt-4 mb-4">
         <custom-button
           class="col-12"

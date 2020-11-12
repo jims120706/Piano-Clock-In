@@ -4,6 +4,9 @@
     <view class="user-name" v-if="hasUserInfo">
       <text>{{ userInfo.username }}</text>
     </view>
+    <view class="more">
+      更多功能敬请期待~~
+    </view>
     <!-- <button
       open-type="getUserInfo"
       @getuserinfo="getUserInfo"
@@ -48,6 +51,9 @@ export default {
   .user-name {
     color: #8a8a8a;
     font-size: 32rpx;
+  }
+  .more{
+    color: #14c5b4;
   }
 }
 </style>

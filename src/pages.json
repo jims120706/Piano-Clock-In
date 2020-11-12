@@ -3,13 +3,13 @@
 		{
 			"path": "pages/clock-in/index",
 			"style": {
-				"navigationBarTitleText": "个人中心"
+				"navigationBarTitleText": "练习打卡"
 			}
 		},
 		{
 			"path": "pages/my-center/index",
 			"style": {
-				"navigationBarTitleText": "练习打卡"
+				"navigationBarTitleText": "个人中心"
 			}
 		},
 		{
