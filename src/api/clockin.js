@@ -68,6 +68,15 @@ function getHoursMonths(options = {}) {
     ...options
   })
 }
+/**
+ * 本年打卡统计
+ */
+function getHoursYear(options = {}) {
+  return requestGet({
+    url: '/dailycheck/hoursYear',
+    ...options
+  })
+}
 
 /**
  * 按时间查询的打卡数据统计
@@ -104,6 +113,7 @@ const apis = {
   getHoursMonths,
   findCondition,
   getTodayDetails,
+  getHoursYear
 }
 
 export default apis

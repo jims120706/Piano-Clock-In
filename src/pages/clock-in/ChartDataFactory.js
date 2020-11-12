@@ -1,9 +1,8 @@
-
 import {
   getWeekDay,
   isDateInWeek,
   getMonthDay,
-  compatibleDateString
+  compatibleDateString,
 } from "@/utils/utils";
 
 const today = new Date();
@@ -97,7 +96,24 @@ function _generateMonthData(remoteData = [], initHours) {
 }
 
 // 本年数据生成器
-function _generateYearData(remoteData = [], initHours) { }
+function _generateYearData(remoteData = {}, initHours) {
+  Object.keys(remoteData).forEach(month => {
+    console.log("month", month)
+    console.log("remoteData", remoteData[month])
+    let month_n = parseInt(month);
+    initHours[month_n - 1] = remoteData[month].reduce((prev, curr, index, arr) => {
+      if (index === arr.length - 1) {
+        return prev.hours + curr.hours
+      }
+      return {
+        hours: prev.hours + curr.hours
+      }
+    }, {
+      hours: 0
+    })
+  })
+  return initHours;
+}
 
 const _generateDataFactorey = {
   _generateWeekData,
@@ -109,7 +125,7 @@ const _generateDataFactorey = {
  * 图表工厂函数
  */
 class ChartDataFactory {
-  static generateChartData(data = [], category) {
+  static generateChartData(data, category) {
     if (!category || !Categories[category]) {
       throw new Error("category is not exist, please check");
     }

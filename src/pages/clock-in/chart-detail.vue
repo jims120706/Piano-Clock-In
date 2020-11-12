@@ -185,8 +185,14 @@ export default {
      * 获取本年打卡数据
      */
     _getHoursYear() {
-      this.yearOptions.datas = getRandomArr(12);
-      this.showChart = true;
+      this.showChart = false;
+      this.$api.clockInApi.getHoursYear().then((res) => {
+        const data = res.item || [];
+        log("本年打卡时长", data);
+        const arr = ChartDataFactory.generateChartData(data, "year");
+        this.yearOptions.datas = arr;
+        this.showChart = true;
+      });
     },
   },
 };

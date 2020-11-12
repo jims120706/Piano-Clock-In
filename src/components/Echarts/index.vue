@@ -8,6 +8,7 @@
 // diy_echart.js是在Echarts官网上按照所需要的模块定制的js,体积会小很多。
 import echarts from "./echarts.min.js";
 import mpvueEcharts from "./mpvue-charts";
+import {getFloat} from '@/utils/utils'
 
 export default {
   props: {
@@ -118,6 +119,11 @@ export default {
               normal: {
                 show: true,
                 position: this.canvasId.includes("detail") ? "right" : "top",
+                formatter: function (info) {
+                  //自定义的
+                  var value = info.value;
+                  return getFloat(value, 1);
+                },
               },
             },
           },
