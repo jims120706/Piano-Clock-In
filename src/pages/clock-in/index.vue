@@ -66,14 +66,15 @@
 
     <popup-container
       ref="authDialog"
-      :showHead="false"
+      title="欢迎使用打卡小程序"
+      :closeIcon="false"
       :maskCloseable="false"
       :autoInitAnimation="false"
     >
-      <button
-        open-type="getUserInfo"
-        @getuserinfo="_onGetUserInfo"
-      >
+      <view class="dialog-tip">
+        专为钢琴爱好者提供的打卡时长统计
+      </view>
+      <button open-type="getUserInfo" @getuserinfo="_onGetUserInfo" class="mt-2">
         {{ username }}
       </button>
     </popup-container>
@@ -108,7 +109,7 @@ export default {
     PopupContainer,
   },
   computed: {
-    ...mapGetters(["token"])
+    ...mapGetters(["token"]),
   },
   watch: {
     token(val) {
@@ -122,12 +123,14 @@ export default {
         // 本月打卡时长
         this._getHoursMonths();
         this._getHoursYear();
+      } else {
+        this._WxLogin();
       }
     },
   },
   data() {
     return {
-      username: "请先授权登录",
+      username: "点击授权后使用",
       userInfo: {},
       openid: "",
       // 选项卡
@@ -181,9 +184,7 @@ export default {
   },
   onShow() {
     if (!this.token) {
-      this._WxLogin().then(() => {
-        this.$refs.authDialog.open();
-      });
+      this._WxLogin();
     } else {
       // 每次进入该页面都要刷新打卡总时长
       this._refreshClockInTotalHours();
@@ -216,12 +217,13 @@ export default {
               .then((res) => {
                 this.openid = res.item.openid;
                 log("请求成功", res);
+                this.$refs.authDialog.open();
                 resolve(res);
               });
           },
           fail: (err) => {
-            reject(err)
-          }
+            reject(err);
+          },
         });
       });
     },
@@ -370,6 +372,12 @@ export default {
   overflow-y: scroll;
   > .detail-btn {
     height: 200rpx;
+  }
+  .dialog-tip{
+    text-align: center;
+    font-size: 32rpx;
+    line-height: 48rpx;
+    color: #14c5b4;
   }
 }
 </style>

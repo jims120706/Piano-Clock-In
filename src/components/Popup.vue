@@ -3,7 +3,7 @@
     <view class="bg" @click.stop="maskClose" :style="bgStyle"></view>
     <view class="_container" :style="ctnStyle">
       <view class="_head" v-if="showHead">
-        <text>{{ title }}</text>
+        <text :style="titleStyle">{{ title }}</text>
         <image
           v-if="closeIcon"
           @click="_handleClick"
@@ -60,12 +60,19 @@ export default {
       type: Boolean,
       default: true,
     },
+    titleColor: {
+      type: String,
+      default: "#14c5b4",
+    },
   },
   computed: {
     ctnStyle() {
       return `width: ${this.cWidth}vw;height: ${
         this.cHeight ? this.cHeight + "vh" : "auto"
       };max-height: 80vh;`;
+    },
+    titleStyle() {
+      return `color:${this.titleColor}`;
     },
     bgStyle() {
       return `opacity: ${this.bgTransparent ? 0 : 0.5};`;
@@ -142,6 +149,7 @@ export default {
     z-index: 1001;
   }
   > ._container {
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
     position: relative;
     background: white;
     overflow: hidden;
@@ -158,6 +166,9 @@ export default {
       border-bottom: 1px solid #ebedf0;
       height: 100rpx;
       position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       > .close-btn {
         width: 40rpx;
         height: 40rpx;
