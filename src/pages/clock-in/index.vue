@@ -8,7 +8,7 @@
         :values="items"
         @clickItem="_onClickItem"
         style-type="button"
-        active-color="#2A9F93"
+        active-color="#14c5b4"
       ></uni-segmented-control>
     </view>
     <view class="container p-0">

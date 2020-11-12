@@ -102,7 +102,7 @@ export default {
 .plan-card {
   border-radius: 10px;
   background: white;
-  color: #2a9f93;
+  color: #14c5b4;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
   > .row1 {
     height: 200rpx;
@@ -111,7 +111,7 @@ export default {
       height: 100rpx;
       // background: orange;
       border-radius: 50%;
-      border: 1px solid #2a9f93;
+      border: 1px solid #14c5b4;
       padding: 10rpx;
     }
     .title {

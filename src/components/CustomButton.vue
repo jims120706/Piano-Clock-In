@@ -21,7 +21,7 @@ export default {
     },
     bgColor: {
       type: String,
-      default: "#2A9F93",
+      default: "#14c5b4",
     },
     color: {
       type: String,
@@ -41,7 +41,7 @@ export default {
       return `pl-${this.textspan}`;
     },
     btnStyle() {
-      return `color: ${this.color};background-color: ${this.bgColor};padding: ${this.btnPadding}rpx 0;`;
+      return `color: ${this.color};background-image: linear-gradient(to right,  ${this.bgColor}, #28dcca);padding: ${this.btnPadding}rpx 0;`;
     },
   },
 };
