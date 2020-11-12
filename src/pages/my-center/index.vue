@@ -2,84 +2,36 @@
   <view class="my-center">
     <image class="user-logo" :src="userLogo" :lazy-load="true"></image>
     <view class="user-name" v-if="hasUserInfo">
-      <text>{{ username }}</text>
+      <text>{{ userInfo.username }}</text>
     </view>
-    <button
+    <!-- <button
       open-type="getUserInfo"
       @getuserinfo="getUserInfo"
       v-if="!hasUserInfo"
     >
       {{ username }}
-    </button>
+    </button> -->
   </view>
 </template>
 
 <script>
 import { getUserInfo, log } from "@/utils/utils";
-import {mapMutations} from '@/store';
+import { mapGetters } from "@/store";
 export default {
-  data() {
-    return {
-      username: "点击授权登录",
-      userLogo: require("@/static/images/my-center/default-user-logo.svg"),
-      userInfo: {},
-      openid: "",
-    };
-  },
   computed: {
+    ...mapGetters(["userInfo"]),
     hasUserInfo() {
-      return this.userInfo.nickName;
+      return this.userInfo && this.userInfo.nickName;
+    },
+    userLogo() {
+      return (
+        (this.userInfo && this.userInfo.avatarUrl) ||
+        require("@/static/images/my-center/default-user-logo.svg")
+      );
     },
   },
-  onLoad() {
-    uni.login({
-      scopes: "auth_user",
-      success: (res) => {
-        log("登录成功", res);
-        this.$Api.commonApi
-          .getSessionKey({
-            data: {
-              code: res.code,
-            },
-          })
-          .then((res) => {
-            this.openid = res.item.openid;
-            log("请求成功", res);
-          });
-      },
-    });
-  },
-  methods: {
-    ...mapMutations(['setToken']),
-    // 获取用户信息
-    getUserInfo(event) {
-      log("用户信息", event.detail);
-      let res = event.detail;
-      // if (this.hasUserInfo()) return;
-      // getUserInfo({
-      //   success: (res) => {
-      //     log("用户信息", res);
-      this.userLogo = res.userInfo.avatarUrl;
-      this.username = "你好，" + res.userInfo.nickName;
-      this.userInfo = res.userInfo;
-      let reqJson = JSON.parse(res.rawData);
-      reqJson.openId = this.openid;
-      console.log('reqJson', reqJson)
-      console.log('JSON.stringify(reqJson)', JSON.stringify(reqJson))
-      this.$Api.commonApi
-        .login({
-          data: {
-            userInfo: JSON.stringify(reqJson),
-          },
-        })
-        .then((res) => {
-          log("登录成功", res);
-          this.setToken(res.access_token);
-        });
-      //   },
-      // });
-    },
-  },
+  onLoad() {},
+  methods: {},
 };
 </script>
 

@@ -64,7 +64,12 @@
       </view>
     </view>
 
-    <popup-container ref="authDialog" :showHead="false" :maskCloseable="false">
+    <popup-container
+      ref="authDialog"
+      :showHead="false"
+      :maskCloseable="false"
+      v-if="!token"
+    >
       <button
         open-type="getUserInfo"
         @getuserinfo="_onGetUserInfo"
@@ -194,7 +199,25 @@ export default {
     this._renderChart();
   },
   methods: {
-    ...mapMutations(["setToken"]),
+    ...mapMutations(["setToken", "setUserInfo"]),
+    _WxLogin() {
+      uni.login({
+        scopes: "auth_user",
+        success: (res) => {
+          log("登录成功", res);
+          this.$Api.commonApi
+            .getSessionKey({
+              data: {
+                code: res.code,
+              },
+            })
+            .then((res) => {
+              this.openid = res.item.openid;
+              log("请求成功", res);
+            });
+        },
+      });
+    },
     // 获取用户信息
     _onGetUserInfo(event) {
       log("用户信息", event.detail);
@@ -206,6 +229,8 @@ export default {
       this.userLogo = res.userInfo.avatarUrl;
       this.username = "你好，" + res.userInfo.nickName;
       this.userInfo = res.userInfo;
+      // 存到store
+      this.setUserInfo(res.userInfo);
       let reqJson = JSON.parse(res.rawData);
       reqJson.openId = this.openid;
       console.log("reqJson", reqJson);
@@ -269,7 +294,7 @@ export default {
     _renderChart() {
       rpxToPx(80).then((res) => {
         this.chartWidth = res.windowWidth - res.trans;
-        this.showChart = true;
+        // this.showChart = true;
       });
     },
     /**
