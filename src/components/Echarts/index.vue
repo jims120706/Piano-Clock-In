@@ -61,7 +61,7 @@ export default {
       });
       canvas.setChart(chart);
       let option = {
-        color: '#14c5b4',
+        color: "#14c5b4",
         grid: {
           left: "10%",
           right: "10%",
@@ -100,6 +100,20 @@ export default {
           {
             data: this.datas,
             type: "bar",
+            itemStyle: {
+              normal: {
+                color: new echarts.graphic.LinearGradient(
+                  0,
+                  0,
+                  0,
+                  1, //4个参数用于配置渐变色的起止位置, 这4个参数依次对应右/下/左/上四个方位. 而0 0 0 1则代表渐变色从正上方开始
+                  [
+                    { offset: 0, color: "#28dcca" },
+                    { offset: 1, color: "#14c5b4" },
+                  ] //数组, 用于配置颜色的渐变过程. 每一项为一个对象, 包含offset和color两个参数. offset的范围是0 ~ 1, 用于表示位置
+                ),
+              },
+            },
             label: {
               normal: {
                 show: true,
