@@ -63,6 +63,16 @@
         </view>
       </view>
     </view>
+
+    <popup-container ref="authDialog" :showHead="false" :maskCloseable="false">
+      <button
+        open-type="getUserInfo"
+        @getuserinfo="_onGetUserInfo"
+        v-if="!hasUserInfo"
+      >
+        {{ username }}
+      </button>
+    </popup-container>
   </view>
 </template>
 
@@ -81,6 +91,8 @@ import ECharts from "@/components/Echarts";
 import chartMockData from "@/utils/chart-mock.json";
 import CustomButton from "@/components/CustomButton";
 import ChartDataFactory, { Categories } from "./ChartDataFactory";
+import PopupContainer from "@/components/Popup";
+import { mapMutations, mapGetters } from "@/store";
 
 export default {
   components: {
@@ -89,9 +101,31 @@ export default {
     ClockInPopup,
     ECharts,
     CustomButton,
+    PopupContainer,
+  },
+  computed: {
+    ...mapGetters(["token"]),
+  },
+  watch: {
+    token(val) {
+      if (val) {
+        // 每次进入该页面都要刷新打卡总时长
+        this._refreshClockInTotalHours();
+        // 获取图表数据
+        // this._getDailycheckCounts();
+        // 本周打卡时长
+        this._getHoursWeek();
+        // 本月打卡时长
+        this._getHoursMonths();
+        this._getHoursYear();
+      }
+    },
   },
   data() {
     return {
+      username: "请先授权登录",
+      userInfo: {},
+      openid: "",
       // 选项卡
       items: ["本周统计", "本月统计", "本年统计"],
       catrgories: ["week", "month", "year"],
@@ -142,20 +176,54 @@ export default {
     };
   },
   onShow() {
-    // 每次进入该页面都要刷新打卡总时长
-    this._refreshClockInTotalHours();
-    // 获取图表数据
-    // this._getDailycheckCounts();
-    // 本周打卡时长
-    this._getHoursWeek();
-    // 本月打卡时长
-    this._getHoursMonths();
-    this._getHoursYear();
+    if (!this.token) {
+      this.$refs.authDialog.open();
+    } else {
+      // 每次进入该页面都要刷新打卡总时长
+      this._refreshClockInTotalHours();
+      // 获取图表数据
+      // this._getDailycheckCounts();
+      // 本周打卡时长
+      this._getHoursWeek();
+      // 本月打卡时长
+      this._getHoursMonths();
+      this._getHoursYear();
+    }
   },
   onLoad() {
     this._renderChart();
   },
   methods: {
+    ...mapMutations(["setToken"]),
+    // 获取用户信息
+    _onGetUserInfo(event) {
+      log("用户信息", event.detail);
+      let res = event.detail;
+      // if (this.hasUserInfo()) return;
+      // getUserInfo({
+      //   success: (res) => {
+      //     log("用户信息", res);
+      this.userLogo = res.userInfo.avatarUrl;
+      this.username = "你好，" + res.userInfo.nickName;
+      this.userInfo = res.userInfo;
+      let reqJson = JSON.parse(res.rawData);
+      reqJson.openId = this.openid;
+      console.log("reqJson", reqJson);
+      console.log("JSON.stringify(reqJson)", JSON.stringify(reqJson));
+      this.$Api.commonApi
+        .login({
+          data: {
+            userInfo: JSON.stringify(reqJson),
+          },
+        })
+        .then((res) => {
+          log("登录成功", res);
+          this.setToken(res.access_token);
+          this.$refs.authDialog.close();
+        });
+      //   },
+      // });
+    },
     /**
      * 点击打卡或补卡按钮回调
      * @param {string} type
@@ -173,7 +241,7 @@ export default {
     _refreshClockInTotalHours() {
       this.$api.clockInApi.dailycheckHoursTotal().then((res) => {
         if (res.item) {
-          log("打卡总时长", res.item.toFixed(1));
+          log("打卡总时长", res);
           this.totalHours = parseFloat(res.item.toFixed(1));
         }
       });

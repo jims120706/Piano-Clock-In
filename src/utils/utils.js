@@ -13,9 +13,9 @@ function getUserInfo(options = {}) {
   uni.getUserInfo({
     withCredentials: false,
     lang: 'zh-CN',
-    success: () => { },
-    fail: () => { },
-    complete: () => { },
+    success: () => {},
+    fail: () => {},
+    complete: () => {},
     ...options,
   })
 }
@@ -23,7 +23,7 @@ function getUserInfo(options = {}) {
 /** 
  * 获取系统信息
  * 
-*/
+ */
 async function getSystemInfo() {
   return new Promise((resolve, reject) => {
     uni.getSystemInfo({
@@ -196,10 +196,36 @@ function getDateString(dateObj) {
   let str = dateObj.toString();
   let s_arr = str.split(" ");
   let year = s_arr[3]
-  let monthIndex =  monthEngMap.findIndex(month => s_arr[1] === month)
+  let monthIndex = monthEngMap.findIndex(month => s_arr[1] === month)
   let month = monthNumMap[monthIndex];
   let date = s_arr[2];
   return `${year}-${month}-${date}`
+}
+
+function initUserAuthorize(scope = '') {
+  return new Promise((resolve, reject) => {
+    uni.getSetting({
+      success(settings) {
+        if (!settings.authSetting[scope]) {
+          uni.authorize({
+            scope,
+            success(res) {
+              resolve(res)
+            },
+            fail(err) {
+              console.error('已经授权过', err)
+              reject(err)
+            }
+          })
+        } else {
+          resolve(settings)
+        }
+      },
+      fail(err) {
+        resject(err)
+      }
+    })
+  })
 }
 
 export {
@@ -217,5 +243,6 @@ export {
   isDateInWeek,
   getMonthDay,
   handleDateTimeStr,
-  getDateString
+  getDateString,
+  initUserAuthorize
 }

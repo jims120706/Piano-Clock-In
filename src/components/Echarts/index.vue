@@ -124,7 +124,6 @@ export default {
         ],
       };
       option = Object.assign({}, option, this.options);
-      console.log("this.canvasId", this.canvasId, option);
       chart.setOption(option);
       this.$refs.chart.setChart(chart);
     },
