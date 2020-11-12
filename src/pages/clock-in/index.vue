@@ -1,6 +1,13 @@
 <template>
   <view class="clock-in">
-    <comp-plan-card :totalHours="totalHours" @onBtnClick="_handlePlanAddClick">
+    <comp-plan-card
+      :totalHours="totalHours"
+      :todayHours="todayHours"
+      :weekHours="weekHours"
+      :monthHours="monthHours"
+      :yearHours="yearHours"
+      @onBtnClick="_handlePlanAddClick"
+    >
     </comp-plan-card>
     <view class="mt-4">
       <uni-segmented-control
@@ -71,10 +78,12 @@
       :maskCloseable="false"
       :autoInitAnimation="false"
     >
-      <view class="dialog-tip">
-        专为钢琴爱好者提供的打卡时长统计
-      </view>
-      <button open-type="getUserInfo" @getuserinfo="_onGetUserInfo" class="mt-2">
+      <view class="dialog-tip"> 专为钢琴爱好者提供的打卡时长统计 </view>
+      <button
+        open-type="getUserInfo"
+        @getuserinfo="_onGetUserInfo"
+        class="mt-2"
+      >
         {{ username }}
       </button>
     </popup-container>
@@ -88,6 +97,8 @@ import {
   rpxToPx,
   getRandomArr,
   getWeekDay,
+  getFloat,
+  compatibleDateString
 } from "@/utils/utils";
 import uniSegmentedControl from "@dcloudio/uni-ui/lib/uni-segmented-control/uni-segmented-control.vue";
 import CompPlanCard from "./components/PlanCard";
@@ -142,6 +153,10 @@ export default {
       chartWidth: 0,
       // 打卡总时长
       totalHours: 0,
+      todayHours: 0,
+      weekHours: 0,
+      monthHours: 0,
+      yearHours: 0,
 
       weekOptions: {
         categories: Categories.week,
@@ -269,14 +284,49 @@ export default {
         url: `/pages/clock-in/add?type=${type}`,
       });
     },
+    // 生成累计时间
+    _genereteHours(data, filter = null) {
+      if (!filter) {
+        return data.reduce(
+          (prev, curr, index, arr) => {
+            if (index === arr.length - 1) {
+              return prev.hours + curr.hours;
+            }
+            return { hours: prev.hours + curr.hours };
+          },
+          { hours: 0 }
+        );
+      } else {
+        let res = data.filter(filter);
+        return res.length > 0
+          ? res.reduce(
+              (prev, curr, index, arr) => {
+                if (index === arr.length - 1) {
+                  return prev.hours + curr.hours;
+                }
+                return { hours: prev.hours + curr.hours };
+              },
+              { hours: 0 }
+            )
+          : 0;
+      }
+    },
     /**
      * 刷新打卡总时长
      */
     _refreshClockInTotalHours() {
       this.$api.clockInApi.dailycheckHoursTotal().then((res) => {
         if (res.item) {
-          log("打卡总时长", res);
-          this.totalHours = parseFloat(res.item.toFixed(1));
+          log("打卡总时长", res.item);
+          const floatUnit = 1;
+          this.totalHours = getFloat(res.item.total, floatUnit);
+          this.todayHours = getFloat(res.item.today, floatUnit);
+          this.weekHours = getFloat(this._genereteHours(res.item.week), floatUnit);
+          // this.monthHours = getFloat(this._genereteHours(res.item.month, item => {
+          //   return new Date(compatibleDateString(item.checkDate)).getMonth() + 1 === new Date().getMonth() + 1
+          // }), floatUnit);
+          this.monthHours = getFloat(this._genereteHours(res.item.month), floatUnit);
+          this.yearHours = getFloat(this._genereteHours(res.item.year), floatUnit);
         }
       });
     },
@@ -335,7 +385,7 @@ export default {
          */
         const data = res.item || [];
         const arr = ChartDataFactory.generateChartData(data, "week");
-        console.log("本周打卡数组", arr);
+        // console.log("本周打卡数组", arr);
         this.weekOptions.datas = arr;
         this.showChart = true;
       });
@@ -373,7 +423,7 @@ export default {
   > .detail-btn {
     height: 200rpx;
   }
-  .dialog-tip{
+  .dialog-tip {
     text-align: center;
     font-size: 32rpx;
     line-height: 48rpx;

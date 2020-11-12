@@ -163,7 +163,7 @@ export default {
          */
         const data = res.item || [];
         const arr = ChartDataFactory.generateChartData(data, "week");
-        console.log("本周打卡数组", arr);
+        // console.log("本周打卡数组", arr);
         this.weekOptions.datas = arr;
         this.showChart = true;
       });

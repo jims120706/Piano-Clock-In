@@ -20,7 +20,15 @@
     <view class="row row2 no-gutters align-items-center">
       <view class="col justify-content-center text-center">
         <view class="unit">{{ todayHours }}h</view>
-        <view class="text pt-1">今天时间</view>
+        <view class="text pt-1">今日累计</view>
+      </view>
+      <view class="col justify-content-center text-center">
+        <view class="unit">{{ weekHours }}h</view>
+        <view class="text pt-1">本周累计</view>
+      </view>
+      <view class="col justify-content-center text-center">
+        <view class="unit">{{ monthHours }}h</view>
+        <view class="text pt-1">本月累计</view>
       </view>
       <!-- <view class="col justify-content-center text-center">
         <view class="unit">{{ totalHours }}h</view>
@@ -28,12 +36,12 @@
       </view> -->
       <view class="col justify-content-center text-center">
         <view class="unit">{{ yearHours }}h</view>
-        <view class="text pt-1">当年时间</view>
+        <view class="text pt-1">本年累计</view>
       </view>
-      <view class="col justify-content-center text-center">
+      <!-- <view class="col justify-content-center text-center">
         <view class="unit">{{ targetDistanceHours }}h</view>
         <view class="text pt-1">距离目标</view>
-      </view>
+      </view> -->
     </view>
     <view
       class="row row3 no-gutters justify-content-center align-items-center mt-3 pb-4"
@@ -72,7 +80,11 @@ export default {
       type: Number,
       default: 0,
     },
-    targetDistanceHours: {
+    weekHours: {
+      type: Number,
+      default: 0,
+    },
+    monthHours: {
       type: Number,
       default: 0,
     },
@@ -130,7 +142,7 @@ export default {
   }
   > .row2 {
     .unit {
-      font-size: 48rpx;
+      font-size: 36rpx;
     }
     .text {
       font-size: 32rpx;

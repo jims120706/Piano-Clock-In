@@ -3,6 +3,7 @@ import {
   getWeekDay,
   isDateInWeek,
   getMonthDay,
+  compatibleDateString
 } from "@/utils/utils";
 
 const today = new Date();
@@ -68,11 +69,11 @@ function _generateWeekData(remoteData = [], initHours) {
     if (isDateInWeek(checkDate)) {
       // 获取今天是周几，找出下标添加时间
       const weekDay = getWeekDay(checkDate);
-      console.log("weekDay", weekDay)
+      // console.log("weekDay", weekDay)
       const index = Categories.week.findIndex(
         (weekday) => weekday === weekDay
       );
-      console.log("index", index)
+      // console.log("index", index)
       if (index !== -1) {
         initHours[index] += item.hours;
       }
@@ -86,7 +87,7 @@ function _generateMonthData(remoteData = [], initHours) {
   remoteData.forEach((item) => {
     let checkDate = item.checkDate;
     // 获取checkDate的日期和month数组中的日期作比较获取下标
-    let date = new Date(checkDate.replace(/\-/ig, "/")).getDate();
+    let date = new Date(compatibleDateString(checkDate)).getDate();
     let dateIndex = Categories.month.findIndex(d => parseInt(d) === date);
     if (dateIndex !== -1) {
       initHours[dateIndex] += item.hours;

@@ -115,7 +115,7 @@ function getRandomArr(arrLen, maxValue = 100) {
  */
 function getWeekDay(dateStr) {
   const week = weekChiMap;
-  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
+  let dateObj = new Date(compatibleDateString(dateStr));
   return week[dateObj.getDay()]
 }
 
@@ -123,7 +123,7 @@ function getWeekDay(dateStr) {
  * 获取本周周一
  */
 function getMondayOfWeek(dateStr, resultType = 'obj') {
-  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
+  let dateObj = new Date(compatibleDateString(dateStr));
   let day = dateObj.getDay() || 7;
   if (resultType === 'obj') {
     return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 - day);
@@ -136,7 +136,7 @@ function getMondayOfWeek(dateStr, resultType = 'obj') {
  * 获取本周周日
  */
 function getSundayOfWeek(dateStr, resultType = 'obj') {
-  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
+  let dateObj = new Date(compatibleDateString(dateStr));
   let day = dateObj.getDay() || 7;
   if (resultType === 'obj') {
     return new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate() + 1 + day);
@@ -151,16 +151,16 @@ function getSundayOfWeek(dateStr, resultType = 'obj') {
 function isDateInWeek(dateStr) {
   let monday = getMondayOfWeek(dateStr, 'str');
   monday += " 00:00:00";
-  monday = monday.replace(/\-/ig, "/")
+  monday = compatibleDateString(monday)
   monday = new Date(monday);
   let sunday = getSundayOfWeek(dateStr, 'str');
   sunday += " 23:59:59"
-  sunday = sunday.replace(/\-/ig, "/")
+  sunday = compatibleDateString(sunday)
   sunday = new Date(sunday);
-  let dateObj = new Date(dateStr.replace(/\-/ig, "/"));
-  console.log("dateObj.getTime()", dateObj.getTime())
-  console.log("monday.getTime()", monday.getTime())
-  console.log("sunday.getTime()", sunday.getTime())
+  let dateObj = new Date(compatibleDateString(dateStr));
+  // console.log("dateObj.getTime()", dateObj.getTime())
+  // console.log("monday.getTime()", monday.getTime())
+  // console.log("sunday.getTime()", sunday.getTime())
   return dateObj.getTime() >= monday.getTime() && dateObj.getTime() <= sunday.getTime()
 }
 
@@ -228,6 +228,14 @@ function initUserAuthorize(scope = '') {
   })
 }
 
+function getFloat(number, fixed = 1) {
+  return parseFloat(number).toFixed(fixed)
+}
+
+function compatibleDateString(dateStr) {
+  return dateStr.replace(/\-/ig, "/")
+}
+
 export {
   getUserInfo,
   log,
@@ -244,5 +252,7 @@ export {
   getMonthDay,
   handleDateTimeStr,
   getDateString,
-  initUserAuthorize
+  initUserAuthorize,
+  getFloat,
+  compatibleDateString
 }

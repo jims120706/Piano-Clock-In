@@ -28,7 +28,7 @@ function dailycheckSupply(options = {}) {
  */
 function dailycheckHoursTotal(options = {}) {
   return requestGet({
-    url: '/dailycheck/hoursTotal',
+    url: '/dailycheck/userTotalHours',
     ...options
   })
 }
