@@ -69,107 +69,34 @@
 
         <!-- 打卡模式 -->
         <uni-card
-          class="col-12 mt-4"
-          title="开始时间"
-          v-if="mode === 'clockIn'"
           is-full="true"
           is-shadow="true"
+          class="col-12 mt-4"
+          :title="textConfig.action + '时间'"
+          v-if="mode === 'clockIn'"
         >
           <picker-view
+            :value="clockInTimePickerList"
             class="time-picker"
-            @change="_handleStartTimePickerChange"
-            :value="startTimePickerList"
+            @change="_handleClockInTimeChange"
           >
             <picker-view-column>
               <view
                 class="column"
                 v-for="(item, index) in todayHours"
                 :key="index"
-                >{{ item }} 时</view
+                >{{ item }} 小时</view
               >
             </picker-view-column>
             <picker-view-column class="column">
               <view class="column" v-for="(item, index) in minutes" :key="index"
-                >{{ item }} 分</view
-              >
-            </picker-view-column>
-          </picker-view>
-        </uni-card>
-
-        <!-- 结束时间占位, 防止重新渲染结束时间组件时页面的跳动 -->
-        <uni-card
-          is-full="true"
-          is-shadow="true"
-          class="col-12 today-end-time mt-4"
-          title="结束时间"
-          v-if="mode === 'clockIn' && reRenderEndTime"
-        >
-          <picker-view class="time-picker" :value="endTimePickerList">
-            <picker-view-column>
-              <view
-                class="column"
-                v-for="(item, index) in todayEndHours"
-                :key="index"
-                >{{ item }} 时</view
-              >
-            </picker-view-column>
-            <picker-view-column class="column">
-              <view
-                class="column"
-                v-for="(item, index) in todayEndMins"
-                :key="index"
-                >{{ item }} 分</view
-              >
-            </picker-view-column>
-          </picker-view>
-        </uni-card>
-
-        <uni-card
-          is-full="true"
-          is-shadow="true"
-          class="col-12 today-end-time mt-4"
-          title="结束时间"
-          v-if="mode === 'clockIn' && !reRenderEndTime"
-        >
-          <picker-view
-            class="time-picker"
-            @change="_handleEndPickerChange"
-            :value="endTimePickerList"
-          >
-            <picker-view-column>
-              <view
-                class="column"
-                v-for="(item, index) in todayEndHours"
-                :key="index"
-                >{{ item }} 时</view
-              >
-            </picker-view-column>
-            <picker-view-column class="column">
-              <view
-                class="column"
-                v-for="(item, index) in todayEndMins"
-                :key="index"
-                >{{ item }} 分</view
+                >{{ item }} 分钟</view
               >
             </picker-view-column>
           </picker-view>
         </uni-card>
       </view>
-      <!-- <view class="feeling row no-gutters">
-        <uni-card
-          is-full="true"
-          is-shadow="true"
-          class="col-12 mt-4"
-          :title="textConfig.action + '心得'"
-          v-if="mode === 'clockIn'"
-        >
-          <textarea
-            class="textarea"
-            placeholder="欢迎分享你的心得"
-            :auto-height="true"
-          ></textarea>
-        </uni-card>
-      </view> -->
+      <!-- 结束时间占位, 防止重新渲染结束时间组件时页面的跳动 -->
       <view class="row no-gutters mt-4 mb-4">
         <custom-button
           class="col-12"
@@ -291,6 +218,7 @@ export default {
       startTimePickerList: [1, 0],
       // 结束选择器值
       endTimePickerList: [2, 0],
+      clockInTimePickerList: [0, 6],
       // 补卡选择器值
       supplyTimePickerList: [0, 0],
       todayEndHours: todayHours.slice(),
@@ -343,6 +271,11 @@ export default {
         this.endTimePickerList.slice()
       );
       this._generateEndMinutesList(startHour, startMinIndex);
+    },
+    // 打卡时间变化
+    _handleClockInTimeChange(event) {
+      const arr = event.detail.value.slice();
+      this.clockInTimePickerList = arr;
     },
     // 补卡时间变化回调
     _handleSupplyTimeChange(event) {
@@ -437,24 +370,19 @@ export default {
     // 打卡
     dailycheckCommit() {
       // 开始时分
-      const [startHourIndex, startMinIndex] = this.startTimePickerList.slice();
-      const startHour = todayHours[startHourIndex];
-      const startMin = minutes[startMinIndex];
-      // 结束时分
-      const [endHourIndex, endMinIndex] = this.endTimePickerList.slice();
-      const endHour = this.todayEndHours[endHourIndex];
-      const endMin = this.todayEndMins[endMinIndex];
-
-      // 拼接字符串
-      const startTimeStr = `${this.initDate} ${startHour}:${startMin}`;
-      const endTimeStr = `${this.initDate} ${endHour}:${endMin}`;
+      const [
+        hourIndex,
+        minIndex,
+      ] = this.clockInTimePickerList.slice();
+      const hour = parseInt(todayHours[hourIndex]);
+      const min = parseInt(minutes[minIndex]);
+      const _minutes = hour * 60 + min
 
       // 请求打卡接口
       this.$api.clockInApi
         .dailycheckCommit({
           data: {
-            startTimeStr,
-            endTimeStr,
+            minutes: _minutes,
           },
         })
         .then((res) => {

@@ -6,7 +6,7 @@ import { requestGet, requestPost } from '@/utils/request'
  */
 function dailycheckCommit(options = {}) {
   return requestPost({
-    url: '/dailycheck/commit',
+    url: '/dailycheck/hoursCommit',
     ...options
   })
 }
