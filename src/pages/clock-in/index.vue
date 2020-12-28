@@ -423,10 +423,8 @@ export default {
 <style lang="scss" scoped>
 .clock-in {
   background: #f7f7f7;
-  height: 100%;
   padding: 0 40rpx;
   overflow-x: hidden;
-  overflow-y: scroll;
   > .detail-btn {
     height: 200rpx;
   }

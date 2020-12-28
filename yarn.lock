@@ -1023,10 +1023,10 @@
     "@babel/types" "^7.3.3"
     vue-template-compiler "^2.6.10"
 
-"@dcloudio/uni-ui@^1.2.6":
-  version "1.2.6"
-  resolved "https://registry.npm.taobao.org/@dcloudio/uni-ui/download/@dcloudio/uni-ui-1.2.6.tgz#7dd30312d690d38d5f25e277bec917429e989030"
-  integrity sha1-fdMDEtaQ041fJeJ3vskXQp6YkDA=
+"@dcloudio/uni-ui@^1.2.9":
+  version "1.2.9"
+  resolved "https://mirrors.huaweicloud.com/repository/npm/@dcloudio/uni-ui/-/uni-ui-1.2.9.tgz#e9394f360ba0b81ebcf72fdc4a6a39d9a2d8d314"
+  integrity sha512-FUTuYhCqOk3beGHYZGjh1OSofQS06Zncwm2+gMWkrQjoopkzvKW+5ik2g3ZqHB9xy3OnkDQDTeJw52jE+NhLxg==
 
 "@dcloudio/vue-cli-plugin-hbuilderx@^2.0.0-28920200927001":
   version "2.0.0-28920200927001"
@@ -7160,11 +7160,6 @@ move-concurrently@^1.0.1:
     mkdirp "^0.5.1"
     rimraf "^2.5.4"
     run-queue "^1.0.3"
-
-mpvue-echarts@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.npm.taobao.org/mpvue-echarts/download/mpvue-echarts-0.3.2.tgz#e08a9dd8233dce306e248a3470bf7f0279422ac2"
-  integrity sha1-4Iqd2CM9zjBuJIo0cL9/AnlCKsI=
 
 ms@2.0.0:
   version "2.0.0"
