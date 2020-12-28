@@ -34,7 +34,21 @@
           :title="textConfig.action + '日期'"
           v-if="mode === 'clockIn'"
         >
-          <text>{{ initDate }}</text>
+          <picker
+            class="col-12"
+            mode="date"
+            :value="initDate"
+            start="2000-01-01"
+            :end="initDate"
+            @change="_handleClockDateChange"
+          >
+            <text>{{ initDate }}</text>
+            <image
+              src="@/static/images/arrow-down.svg"
+              :lazy-load="true"
+              class="icon"
+            ></image>
+          </picker>
         </uni-card>
       </view>
       <view class="time row no-gutters">
@@ -253,8 +267,13 @@ export default {
       // log("小时", currHour, currHourIndex);
       // log("分钟", currMin);
     },
-    // 打卡日期切换回调
+    // 补卡日期切换回调
     _handlePlanDateChange(event) {
+      log("补卡日期切换回调", event.detail.value);
+      this.initDate = handleDateTimeStr(event.detail.value, "-");
+    },
+    // 打卡日期切换回调
+    _handleClockDateChange(event) {
       log("打卡日期切换回调", event.detail.value);
       this.initDate = handleDateTimeStr(event.detail.value, "-");
     },
@@ -370,20 +389,15 @@ export default {
     // 打卡
     dailycheckCommit() {
       // 开始时分
-      const [
-        hourIndex,
-        minIndex,
-      ] = this.clockInTimePickerList.slice();
+      const [hourIndex, minIndex] = this.clockInTimePickerList.slice();
       const hour = parseInt(todayHours[hourIndex]);
       const min = parseInt(minutes[minIndex]);
-      const _minutes = hour * 60 + min
+      const _minutes = hour * 60 + min;
 
       // 请求打卡接口
       this.$api.clockInApi
         .dailycheckCommit({
-          data: {
-            minutes: _minutes,
-          },
+          data: { date: this.initDate, minutes: _minutes },
         })
         .then((res) => {
           if (res.success) {
